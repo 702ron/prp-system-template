@@ -222,6 +222,23 @@ Creates new development branches.
 - Configures development environment
 - Prepares for development
 
+#### `/setup-prp-system`
+Automatically sets up the complete PRP system in your project.
+
+**Usage:**
+```
+/setup-prp-system
+/setup-prp-system --tech-stack
+/setup-prp-system --full
+```
+
+**Features:**
+- Creates directory structure
+- Sets up PRP templates and runner scripts
+- Creates AI documentation framework
+- Optionally detects tech stack and creates ai_docs
+- Optionally creates example PRPs
+
 ### 📝 Git & GitHub Operations
 
 #### `/create-pr`
@@ -286,7 +303,7 @@ Commands work seamlessly with your PRP system:
 - **Debugging**: `/debug-RCA`
 
 ### 🚀 Development
-- **Setup**: `/prime-core`, `/onboarding`
+- **Setup**: `/prime-core`, `/onboarding`, `/setup-prp-system`
 - **Workflow**: `/new-dev-branch`, `/smart-commit`
 - **Collaboration**: `/create-pr`
 
@@ -295,16 +312,19 @@ Commands work seamlessly with your PRP system:
 ### 1. Start with Context
 Always use `/prime-core` when starting a new session to load project context.
 
-### 2. Use PRPs for Features
+### 2. Setup PRP System
+Use `/setup-prp-system` to quickly initialize the PRP system in new projects.
+
+### 3. Use PRPs for Features
 For new features, use the PRP workflow:
 1. `/prp-base-create` to generate the PRP
 2. `/prp-base-execute` to implement it
 3. `/review-general` to validate the code
 
-### 3. Regular Reviews
+### 4. Regular Reviews
 Use `/review-staged-unstaged` before committing to ensure code quality.
 
-### 4. Smart Commits
+### 5. Smart Commits
 Use `/smart-commit` to create meaningful commit messages.
 
 ## Integration with Your Workflow

@@ -13,8 +13,11 @@ cd my-new-project
 
 ### 2. Set Up PRP System
 ```bash
-# Run the automated setup script
+# Option 1: Run the automated setup script
 ./scripts/setup-prp-system.sh
+
+# Option 2: Use Claude slash command (in Claude Code)
+/setup-prp-system
 ```
 
 ### 3. Detect Your Tech Stack
@@ -36,6 +39,7 @@ python PRPs/run_prp.py PRPs/my-feature.md
 ### 5. Use Claude Slash Commands (Optional)
 ```bash
 # In Claude Code, type "/" to see available commands
+/setup-prp-system --full  # Complete setup with examples
 /prp-base-create implement user authentication
 /prp-base-execute PRPs/my-feature.md
 /review-general src/
