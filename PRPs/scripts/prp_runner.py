@@ -11,7 +11,7 @@ Typical usage:
 Arguments:
     --prp-path       Path to a PRP markdown file (overrides --prp)
     --prp            Feature key; resolves to PRPs/{feature}.md
-    --model          CLI executable for the LLM (default: "claude") Only Claude Code is supported for now
+    --model          CLI executable for the LLM (default: "claude") Only Claude Code is supported
     --interactive    Pass through to run the model in chat mode; otherwise headless.
     --output-format  Output format for headless mode: text, json, stream-json (default: text)
 """
@@ -97,20 +97,28 @@ def run_model(
 ) -> None:
     if interactive:
         # Chat mode: feed prompt via STDIN, no -p flag so the user can continue the session.
+        allowed_tools = (
+            "Edit,Bash,Write,MultiEdit,NotebookEdit,WebFetch,Agent,LS,Grep,Read,"
+            "NotebookRead,TodoRead,TodoWrite,WebSearch"
+        )
         cmd = [
             model,
             "--allowedTools",
-            "Edit,Bash,Write,MultiEdit,NotebookEdit,WebFetch,Agent,LS,Grep,Read,NotebookRead,TodoRead,TodoWrite,WebSearch",
+            allowed_tools,
         ]
         subprocess.run(cmd, input=prompt.encode(), check=True)
     else:
         # Headless: pass prompt via -p for non-interactive mode
+        allowed_tools = (
+            "Edit,Bash,Write,MultiEdit,NotebookEdit,WebFetch,Agent,LS,Grep,Read,"
+            "NotebookRead,TodoRead,TodoWrite,WebSearch"
+        )
         cmd = [
             model,
             "-p",  # This is the --print flag for non-interactive mode
             prompt,
             "--allowedTools",
-            "Edit,Bash,Write,MultiEdit,NotebookEdit,WebFetch,Agent,LS,Grep,Read,NotebookRead,TodoRead,TodoWrite,WebSearch",
+            allowed_tools,
             # "--max-turns",
             # "30",  # Safety limit for headless mode uncomment if needed
             "--output-format",
@@ -134,37 +142,24 @@ def run_model(
                         message.get("type") == "system"
                         and message.get("subtype") == "init"
                     ):
-                        print(
-                            f"Session started: {message.get('session_id')}",
-                            file=sys.stderr,
-                        )
+                        session_id = message.get('session_id')
+                        print(f"Session started: {session_id}", file=sys.stderr)
                     elif message.get("type") == "assistant":
-                        print(
-                            f"Assistant: {message.get('message', {}).get('content', '')[:100]}...",
-                            file=sys.stderr,
-                        )
+                        content = message.get('message', {}).get('content', '')[:100]
+                        print(f"Assistant: {content}...", file=sys.stderr)
                     elif message.get("type") == "result":
-                        print(f"\nFinal result:", file=sys.stderr)
-                        print(
-                            f"  Success: {message.get('subtype') == 'success'}",
-                            file=sys.stderr,
-                        )
-                        print(
-                            f"  Cost: ${message.get('cost_usd', 0):.4f}",
-                            file=sys.stderr,
-                        )
-                        print(
-                            f"  Duration: {message.get('duration_ms', 0)}ms",
-                            file=sys.stderr,
-                        )
-                        print(
-                            f"  Turns: {message.get('num_turns', 0)}", file=sys.stderr
-                        )
+                        print("\nFinal result:", file=sys.stderr)
+                        success = message.get('subtype') == 'success'
+                        print(f"  Success: {success}", file=sys.stderr)
+                        cost = message.get('cost_usd', 0)
+                        print(f"  Cost: ${cost:.4f}", file=sys.stderr)
+                        duration = message.get('duration_ms', 0)
+                        print(f"  Duration: {duration}ms", file=sys.stderr)
+                        turns = message.get('num_turns', 0)
+                        print(f"  Turns: {turns}", file=sys.stderr)
                         if message.get("result"):
-                            print(
-                                f"\nResult text:\n{message.get('result')}",
-                                file=sys.stderr,
-                            )
+                            result = message.get('result')
+                            print(f"\nResult text:\n{result}", file=sys.stderr)
 
                     # Print the full message for downstream processing
                     print(json.dumps(message))
@@ -203,22 +198,15 @@ def run_model(
             # Print summary to stderr for user visibility
             if isinstance(json_data, dict):
                 if json_data.get("type") == "result":
-                    print(f"\nSummary:", file=sys.stderr)
-                    print(
-                        f"  Success: {not json_data.get('is_error', False)}",
-                        file=sys.stderr,
-                    )
-                    print(
-                        f"  Cost: ${json_data.get('cost_usd', 0):.4f}", file=sys.stderr
-                    )
-                    print(
-                        f"  Duration: {json_data.get('duration_ms', 0)}ms",
-                        file=sys.stderr,
-                    )
-                    print(
-                        f"  Session: {json_data.get('session_id', 'unknown')}",
-                        file=sys.stderr,
-                    )
+                    print("\nSummary:", file=sys.stderr)
+                    success = not json_data.get('is_error', False)
+                    print(f"  Success: {success}", file=sys.stderr)
+                    cost = json_data.get('cost_usd', 0)
+                    print(f"  Cost: ${cost:.4f}", file=sys.stderr)
+                    duration = json_data.get('duration_ms', 0)
+                    print(f"  Duration: {duration}ms", file=sys.stderr)
+                    session = json_data.get('session_id', 'unknown')
+                    print(f"  Session: {session}", file=sys.stderr)
 
         else:
             # Default text output

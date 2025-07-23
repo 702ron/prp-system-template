@@ -7,6 +7,7 @@ import os
 import json
 from pathlib import Path
 
+
 def detect_tech_stack():
     """Detect technology stack from project files."""
     tech_stack = {
@@ -15,7 +16,7 @@ def detect_tech_stack():
         'database': [],
         'tools': []
     }
-    
+
     # Check for package.json (Node.js/React/Vue/Angular)
     if os.path.exists('package.json'):
         with open('package.json', 'r') as f:
@@ -23,7 +24,7 @@ def detect_tech_stack():
             dependencies = package_data.get('dependencies', {})
             dev_dependencies = package_data.get('devDependencies', {})
             all_deps = {**dependencies, **dev_dependencies}
-            
+
             # Frontend frameworks
             if 'react' in all_deps:
                 tech_stack['frontend'].append('React')
@@ -35,7 +36,7 @@ def detect_tech_stack():
                 tech_stack['frontend'].append('Next.js')
             if 'nuxt' in all_deps:
                 tech_stack['frontend'].append('Nuxt.js')
-            
+
             # UI libraries
             if 'tailwindcss' in all_deps:
                 tech_stack['frontend'].append('Tailwind CSS')
@@ -45,7 +46,7 @@ def detect_tech_stack():
                 tech_stack['frontend'].append('Chakra UI')
             if 'antd' in all_deps:
                 tech_stack['frontend'].append('Ant Design')
-            
+
             # State management
             if 'redux' in all_deps:
                 tech_stack['frontend'].append('Redux')
@@ -53,7 +54,7 @@ def detect_tech_stack():
                 tech_stack['frontend'].append('Zustand')
             if '@tanstack/react-query' in all_deps:
                 tech_stack['frontend'].append('TanStack Query')
-            
+
             # Backend frameworks
             if 'express' in all_deps:
                 tech_stack['backend'].append('Express')
@@ -63,15 +64,15 @@ def detect_tech_stack():
                 tech_stack['backend'].append('Koa')
             if 'nest' in all_deps:
                 tech_stack['backend'].append('NestJS')
-            
+
             # TypeScript
             if 'typescript' in all_deps:
                 tech_stack['tools'].append('TypeScript')
-    
+
     # Check for Python files and requirements
     if any(Path('.').glob('*.py')):
         tech_stack['backend'].append('Python')
-    
+
     if os.path.exists('requirements.txt'):
         with open('requirements.txt', 'r') as f:
             requirements = f.read().lower()
@@ -83,19 +84,19 @@ def detect_tech_stack():
                 tech_stack['backend'].append('FastAPI')
             if 'celery' in requirements:
                 tech_stack['backend'].append('Celery')
-    
+
     # Check for pyproject.toml
     if os.path.exists('pyproject.toml'):
         tech_stack['backend'].append('Python')
-    
+
     # Check for Go files
     if any(Path('.').glob('*.go')):
         tech_stack['backend'].append('Go')
-    
+
     # Check for Rust files
     if any(Path('.').glob('*.rs')) or os.path.exists('Cargo.toml'):
         tech_stack['backend'].append('Rust')
-    
+
     # Check for database files
     if os.path.exists('supabase'):
         tech_stack['database'].append('Supabase')
@@ -105,7 +106,7 @@ def detect_tech_stack():
         tech_stack['database'].append('Database Migrations')
     if any(Path('.').glob('*.sql')):
         tech_stack['database'].append('SQL')
-    
+
     # Check for specific database files
     if os.path.exists('docker-compose.yml'):
         with open('docker-compose.yml', 'r') as f:
@@ -118,7 +119,7 @@ def detect_tech_stack():
                 tech_stack['database'].append('MongoDB')
             if 'redis' in content:
                 tech_stack['database'].append('Redis')
-    
+
     # Check for build tools
     if os.path.exists('vite.config.js') or os.path.exists('vite.config.ts'):
         tech_stack['tools'].append('Vite')
@@ -126,7 +127,7 @@ def detect_tech_stack():
         tech_stack['tools'].append('Webpack')
     if os.path.exists('rollup.config.js'):
         tech_stack['tools'].append('Rollup')
-    
+
     # Check for testing frameworks
     if os.path.exists('jest.config.js') or 'jest' in tech_stack.get('tools', []):
         tech_stack['tools'].append('Jest')
@@ -134,13 +135,14 @@ def detect_tech_stack():
         tech_stack['tools'].append('Cypress')
     if os.path.exists('playwright.config.js'):
         tech_stack['tools'].append('Playwright')
-    
+
     return tech_stack
+
 
 def suggest_ai_docs(tech_stack):
     """Suggest ai_docs to create based on tech stack."""
     suggestions = []
-    
+
     # Frontend suggestions
     for frontend in tech_stack['frontend']:
         if frontend == 'React':
@@ -174,7 +176,7 @@ def suggest_ai_docs(tech_stack):
             suggestions.append('zustand-patterns.md')
         elif frontend == 'TanStack Query':
             suggestions.append('react-query-patterns.md')
-    
+
     # Backend suggestions
     for backend in tech_stack['backend']:
         if backend == 'Express':
@@ -214,7 +216,7 @@ def suggest_ai_docs(tech_stack):
                 'rust-patterns.md',
                 'rust-web-patterns.md'
             ])
-    
+
     # Database suggestions
     for database in tech_stack['database']:
         if database == 'Supabase':
@@ -234,7 +236,7 @@ def suggest_ai_docs(tech_stack):
             suggestions.append('mongodb-patterns.md')
         elif database == 'Redis':
             suggestions.append('redis-patterns.md')
-    
+
     # Tool suggestions
     for tool in tech_stack['tools']:
         if tool == 'TypeScript':
@@ -245,31 +247,33 @@ def suggest_ai_docs(tech_stack):
             suggestions.append('jest-testing-patterns.md')
         elif tool == 'Cypress':
             suggestions.append('cypress-testing-patterns.md')
-    
+
     # Remove duplicates and return
     return list(set(suggestions))
+
 
 def create_ai_docs_files(suggestions):
     """Create the suggested ai_docs files with basic templates."""
     created_files = []
-    
+
     for suggestion in suggestions:
         file_path = f"PRPs/ai_docs/{suggestion}"
         if not os.path.exists(file_path):
             # Create basic template based on file name
             template = create_basic_template(suggestion)
-            
+
             with open(file_path, 'w') as f:
                 f.write(template)
-            
+
             created_files.append(file_path)
-    
+
     return created_files
+
 
 def create_basic_template(filename):
     """Create a basic template for ai_docs files."""
     name = filename.replace('.md', '').replace('-', ' ').title()
-    
+
     return f"""# {name}
 
 ## Overview
@@ -305,42 +309,45 @@ Brief description of the patterns covered in this document.
 - Common use cases and implementations
 """
 
+
 def main():
     print("🔍 Detecting technology stack...")
     tech_stack = detect_tech_stack()
-    
+
     print("\n📋 Detected Technology Stack:")
     for category, technologies in tech_stack.items():
         if technologies:
             print(f"  {category.title()}: {', '.join(technologies)}")
-    
+
     suggestions = suggest_ai_docs(tech_stack)
-    
-    print(f"\n📝 Suggested ai_docs to create:")
+
+    print("\n📝 Suggested ai_docs to create:")
     for suggestion in suggestions:
         print(f"  - PRPs/ai_docs/{suggestion}")
-    
+
     if suggestions:
-        print(f"\n💡 Would you like to create these ai_docs files? (y/n): ", end="")
+        print("\n💡 Would you like to create these ai_docs files? (y/n): ", end="")
         response = input().lower().strip()
-        
+
         if response in ['y', 'yes']:
             created_files = create_ai_docs_files(suggestions)
             print(f"\n✅ Created {len(created_files)} ai_docs files:")
             for file_path in created_files:
                 print(f"  - {file_path}")
-            
-            print(f"\n📝 Next steps:")
-            print(f"  1. Edit the created ai_docs files with your project's patterns")
-            print(f"  2. Create your first PRP: cp PRPs/templates/prp_base.md PRPs/my-feature.md")
-            print(f"  3. Reference the ai_docs in your PRP")
+
+            print("\n📝 Next steps:")
+            print("  1. Edit the created ai_docs files with your project's patterns")
+            print("  2. Create your first PRP: cp PRPs/templates/prp_base.md PRPs/my-feature.md")
+            print("  3. Reference the ai_docs in your PRP")
         else:
-            print(f"\n💡 Run this command to create the suggested ai_docs:")
-            print(f"  touch {' '.join([f'PRPs/ai_docs/{s}' for s in suggestions])}")
+            print("\n💡 Run this command to create the suggested ai_docs:")
+            suggestion_files = ' '.join([f'PRPs/ai_docs/{s}' for s in suggestions])
+            print(f"  touch {suggestion_files}")
     else:
-        print(f"\n💡 No specific ai_docs suggestions. Consider creating:")
-        print(f"  - PRPs/ai_docs/general-patterns.md")
-        print(f"  - PRPs/ai_docs/project-conventions.md")
+        print("\n💡 No specific ai_docs suggestions. Consider creating:")
+        print("  - PRPs/ai_docs/general-patterns.md")
+        print("  - PRPs/ai_docs/project-conventions.md")
+
 
 if __name__ == "__main__":
     main()
