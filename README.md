@@ -4,6 +4,23 @@ A comprehensive PRP (Product Requirement Prompt) system template for AI-assisted
 
 ## 🚀 Quick Start (5 Minutes)
 
+### 0. Setup Slash Commands (Required for Claude Code)
+Before using any slash commands, you need to set up the `.claude` directory in your project:
+
+```bash
+# Option 1: Clone this template repository
+git clone https://github.com/702ron/prp-system-template.git my-new-project
+cd my-new-project
+
+# Option 2: Copy the .claude directory to your existing project
+cp -r prp-system-template/.claude /path/to/your/project/
+
+# Option 3: Download just the .claude directory
+curl -L https://github.com/702ron/prp-system-template/archive/main.tar.gz | tar -xz --strip-components=1 prp-system-template-main/.claude
+```
+
+**Note**: The `.claude` directory contains all the slash commands. Without it, the commands won't be available in Claude Code.
+
 ### 1. Choose Your Starting Point
 
 #### For New Projects
@@ -54,6 +71,34 @@ python PRPs/run_prp.py PRPs/my-feature.md
 /prp-base-create implement user authentication
 /prp-base-execute PRPs/my-feature.md
 /review-general src/
+```
+
+## 🎯 Three Ways to Use This Template
+
+### 1. **New Project** (Recommended for new development)
+```bash
+# Clone the template and start fresh
+git clone https://github.com/702ron/prp-system-template.git my-new-project
+cd my-new-project
+
+# Use the new project command
+/new-project "A React application for e-commerce with payment processing"
+```
+
+### 2. **Existing Project** (Add PRP system to current project)
+```bash
+# Copy just the .claude directory to your existing project
+cp -r prp-system-template/.claude /path/to/your/project/
+
+# Use the analyze project command
+/analyze-project "I want to add real-time notifications and improve performance"
+```
+
+### 3. **PRP System Only** (Minimal setup)
+```bash
+# Copy the .claude directory and run setup
+cp -r prp-system-template/.claude /path/to/your/project/
+/setup-prp-system --full
 ```
 
 ## 📋 What's Included
@@ -209,6 +254,45 @@ python scripts/detect-tech-stack.py
 ```
 
 ## 🔧 Customization
+
+## 🛠️ Troubleshooting
+
+### Slash Commands Not Appearing
+If you don't see the slash commands in Claude Code:
+
+1. **Check .claude directory exists**:
+   ```bash
+   ls -la .claude/commands/
+   ```
+
+2. **Verify command files are present**:
+   ```bash
+   ls .claude/commands/development/
+   # Should show: analyze-project.md, new-project.md, setup-prp-system.md, etc.
+   ```
+
+3. **Restart Claude Code**: Sometimes Claude Code needs to be restarted to detect new commands
+
+4. **Check file permissions**:
+   ```bash
+   chmod -R 644 .claude/commands/
+   ```
+
+### Common Issues
+
+**"Command not found" errors**:
+- Ensure you're in the correct project directory
+- Verify the `.claude` directory is in your project root
+- Check that command files have `.md` extensions
+
+**Permission errors**:
+- Make sure you have read permissions on the `.claude` directory
+- Try copying the directory again if permissions are corrupted
+
+**Commands not updating**:
+- Clear Claude Code cache
+- Restart the Claude Code application
+- Verify you're using the latest version of the template
 
 ### Adding New Technologies
 1. Update `scripts/detect-tech-stack.py` to detect your technology
