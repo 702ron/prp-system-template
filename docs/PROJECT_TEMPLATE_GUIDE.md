@@ -1,1 +1,383 @@
-# Project Template Guidenn## OverviewnnThis guide explains how to create reusable project templates with the PRP system and ai_docs infrastructure. Templates allow you to quickly set up new projects with consistent patterns and AI-assisted development capabilities.nn## Creating a Project Templatenn### Step 1: Set Up Base Templatenn1. **Create template repository**n```bashn# Create new repository for your templatenmkdir my-project-templatencd my-project-templatenngit initngit remote add origin https://github.com/your-username/my-project-template.gitn```nn2. **Set up PRP system**n```bashn# Copy PRP system filesncp -r /path/to/prp-system-template/PRPs ./ncp -r /path/to/prp-system-template/scripts ./nn# Make scripts executablenchmod +x scripts/setup-prp-system.shnchmod +x PRPs/run_prp.pyn```nn### Step 2: Customize for Technology StacknnBased on your template's technology stack, create appropriate ai_docs:nn**React/TypeScript Template:**n- `PRPs/ai_docs/react-typescript-conventions.md`n- `PRPs/ai_docs/tailwind-patterns.md`n- `PRPs/ai_docs/vite-patterns.md`nn**Node.js/Express Template:**n- `PRPs/ai_docs/express-patterns.md`n- `PRPs/ai_docs/nodejs-patterns.md`n- `PRPs/ai_docs/jest-testing-patterns.md`nn**Python/Django Template:**n- `PRPs/ai_docs/django-patterns.md`n- `PRPs/ai_docs/python-patterns.md`n- `PRPs/ai_docs/postgresql-patterns.md`nn### Step 3: Create Template READMEnnInclude comprehensive documentation explaining:n- Template purpose and use casesn- Technology stackn- Setup instructionsn- PRP system usagen- Customization optionsnnCreate `README.md`:nn```markdownn# [Template Name] - Project Templatenn## OverviewnBrief description of what this template provides.nn## Technology Stackn- Frontend: [React/Vue/Angular]n- Backend: [Node.js/Python/Go]n- Database: [PostgreSQL/MongoDB]n- UI: [Tailwind/Material-UI]nn## Featuresn- Structured PRP templatesn- Technology-specific ai_docsn- Automated setup scriptsn- Development guidelinesnn## Quick Startn```bashn# Use this templatennpx create-my-template my-new-projectncd my-new-projectnn# Set up PRP systemn./scripts/setup-prp-system.shnn# Detect tech stacknpython scripts/detect-tech-stack.pyn```nn## Quick PRP Usagen```bashn# Create a new PRPncp PRPs/templates/prp_base.md PRPs/my-feature.mdnn# Edit the PRPnnano PRPs/my-feature.mdnn# Run with AInpython PRPs/run_prp.py PRPs/my-feature.mdn```nn## Project Structuren```nmy-project-template/n├── PRPs/                    # PRP systemn├── scripts/                 # Automation scriptsn├── src/                     # Template source coden├── docs/                    # Documentationn└── README.md               # Template documentationn```nn## Customizationnn### Adding New Technologiesn1. Update `scripts/detect-tech-stack.py`n2. Create corresponding ai_docsn3. Update template documentationnn### Modifying Patternsn1. Edit ai_docs files with your patternsn2. Update PRP templates if neededn3. Test with sample PRPsnn## Licensen[Your License]n```nn### Step 4: Set Up GitHub Templatenn1. **Push to GitHub**n```bashngit add .ngit commit -m "Initial template setup"ngit push -u origin mainn```nn2. **Enable template option**n- Go to repository settingsn- Enable "Template repository" optionn- Add template description and topicsnn### Step 5: Create Template Examplesnn```bashn# Create example PRPsnmkdir -p PRPs/examplesncp PRPs/templates/prp_base.md PRPs/examples/sample-feature.mdn# Edit with template-specific examplesn```nn### Step 6: Set Up Distributionnn#### Option A: NPM Packagen```jsonn{n  "name": "create-my-template",n  "version": "1.0.0",n  "description": "Create new projects with PRP system",n  "bin": {n    "create-my-template": "./bin/create.js"n  },n  "files": [n    "template/",n    "bin/"n  ]n}n```nn#### Option B: GitHub Templaten- Use GitHub's template featuren- Share template URL with teamn- Document usage instructionsnn## Using Project Templatesnn### Method 1: GitHub Templaten1. Go to template repositoryn2. Click "Use this template"n3. Fill in repository detailsn4. Clone new repositoryn5. Follow setup instructionsnn### Method 2: Manual Copyn```bashn# Clone templatengit clone https://github.com/your-username/my-project-template.git my-new-projectncd my-new-projectnn# Remove template-specific filesnrm -rf .gitnrm README.mdnn# Initialize new repositoryngit initngit add .ngit commit -m "Initial commit"n```nn### Method 3: Automated Setupn```bashn# Download and set up PRP systemncurl -sSL https://raw.githubusercontent.com/your-username/my-project-template/main/scripts/setup-prp-system.sh | bashnn# Detect tech stacknpython scripts/detect-tech-stack.pyn```nn## Template Best Practicesnn### 1. Keep Templates Focusedn- Create specific templates for different use casesn- Don't include unnecessary technologiesn- Focus on common patterns and conventionsnn### 2. Maintain ai_docs Qualityn- Include real, working code examplesn- Keep patterns consistent with template stackn- Update patterns as technologies evolvenn### 3. Provide Clear Documentationn- Explain template purpose and use casesn- Include setup and usage instructionsn- Document customization optionsnn### 4. Test Templates Regularlyn- Create test projects using templatesn- Verify PRP system works correctlyn- Update examples and documentationnn### 5. Version Templatesn- Use semantic versioning for templatesn- Maintain changelog of updatesn- Provide migration guidesnn## Advanced Template Featuresnn### 1. CI/CD Integrationn```yamln# .github/workflows/template-test.ymlnname: Template Testnnon:n  push:n    branches: [main]n  pull_request:n    branches: [main]nnjobs:n  test-template:n    runs-on: ubuntu-latestn    steps:n      - uses: actions/checkout@v3n      n      - name: Setup Node.jsn        uses: actions/setup-node@v3n        with:n          node-version: "18"nn      - name: Install dependenciesn        run: npm installn        n      - name: Test PRP systemn        run: |n          python scripts/detect-tech-stack.pyn          python PRPs/run_prp.py PRPs/examples/sample-feature.md --validate-onlyn          n      - name: Run testsn        run: npm testn```nn### 2. Template Validationn```pythonn# scripts/validate-template.pyndef validate_template():n    required_files = [n        'PRPs/templates/prp_base.md',n        'PRPs/run_prp.py',n        'scripts/setup-prp-system.sh',n        'README.md'n    ]n    n    missing_files = []n    for file_path in required_files:n        if not os.path.exists(file_path):n            missing_files.append(file_path)n    n    if missing_files:n        print("❌ Missing required template files:")n        for file_path in missing_files:n            print(f"  - {file_path}")n        return Falsen    n    print("✅ Template validation passed")n    return Truen```nn### 3. Package.json Integrationn```jsonn{n  "name": "my-project-template",n  "version": "1.0.0",n  "description": "Project template with PRP system",n  "scripts": {n    "setup-prp": "./scripts/setup-prp-system.sh",n    "detect-stack": "python scripts/detect-tech-stack.py",n    "validate-prp": "python PRPs/run_prp.py PRPs/examples/sample-feature.md --validate-only"n  },n  "files": ["PRPs/", "scripts/"]n}n```nn## Troubleshootingnn### Common Issuesnn1. **Template not working in new projects**n   - Check file permissionsn   - Verify script pathsn   - Test in clean environmentnn2. **ai_docs not relevant to new project**n   - Update tech stack detectionn   - Create more generic patternsn   - Allow easy customizationnn3. **Setup script fails**n   - Check Python installationn   - Verify file permissionsn   - Test script manuallynn## Distribution Optionsnn### 1. GitHub Template Repositoryn- Most common approachn- Easy to use and maintainn- Good for team collaborationnn### 2. NPM Packagen- Good for Node.js projectsn- Easy to install and updaten- Can include CLI toolsnn### 3. Docker Imagen- Good for complex setupsn- Consistent environmentn- Easy deploymentnn### 4. Git Submodulesn- Good for shared componentsn- Version control integrationn- Easy updatesnn## Success MetricsnnTrack these metrics to measure template effectiveness:n- **Adoption rate**: How many projects use the templaten- **Setup time**: Time to get new project runningn- **Consistency**: Code quality across projectsn- **Maintenance**: Time spent updating templatesn- **Team satisfaction**: Developer feedbacknn---nnThis systematic approach ensures that every new project can quickly adopt the PRP system and benefit from AI-assisted development while maintaining code quality and consistency across all your projects.n
+# Project Template Guide
+
+## Overview
+
+This guide explains how to create reusable project templates with the PRP system and ai_docs infrastructure. Templates allow you to quickly set up new projects with consistent patterns and AI-assisted development capabilities.
+
+## Creating a Project Template
+
+### Step 1: Set Up Base Template
+
+1. **Create template repository**
+```bash
+# Create new repository for your template
+mkdir my-project-template
+cd my-project-template
+
+git init
+git remote add origin https://github.com/your-username/my-project-template.git
+```
+
+2. **Set up PRP system**
+```bash
+# Copy PRP system files
+cp -r /path/to/prp-system-template/PRPs ./
+cp -r /path/to/prp-system-template/scripts ./
+
+# Make scripts executable
+chmod +x scripts/setup-prp-system.sh
+chmod +x PRPs/run_prp.py
+```
+
+### Step 2: Customize for Technology Stack
+
+Based on your template's technology stack, create appropriate ai_docs:
+
+**React/TypeScript Template:**
+- `PRPs/ai_docs/react-typescript-conventions.md`
+- `PRPs/ai_docs/tailwind-patterns.md`
+- `PRPs/ai_docs/vite-patterns.md`
+
+**Node.js/Express Template:**
+- `PRPs/ai_docs/express-patterns.md`
+- `PRPs/ai_docs/nodejs-patterns.md`
+- `PRPs/ai_docs/jest-testing-patterns.md`
+
+**Python/Django Template:**
+- `PRPs/ai_docs/django-patterns.md`
+- `PRPs/ai_docs/python-patterns.md`
+- `PRPs/ai_docs/postgresql-patterns.md`
+
+### Step 3: Create Template README
+
+Include comprehensive documentation explaining:
+- Template purpose and use cases
+- Technology stack
+- Setup instructions
+- PRP system usage
+- Customization options
+
+Create `README.md`:
+
+```markdown
+# [Template Name] - Project Template
+
+## Overview
+Brief description of what this template provides.
+
+## Technology Stack
+- Frontend: [React/Vue/Angular]
+- Backend: [Node.js/Python/Go]
+- Database: [PostgreSQL/MongoDB]
+- UI: [Tailwind/Material-UI]
+
+## Features
+- Structured PRP templates
+- Technology-specific ai_docs
+- Automated setup scripts
+- Development guidelines
+
+## Quick Start
+```bash
+# Use this template
+npx create-my-template my-new-project
+cd my-new-project
+
+# Set up PRP system
+./scripts/setup-prp-system.sh
+
+# Detect tech stack
+python scripts/detect-tech-stack.py
+```
+
+## Quick PRP Usage
+```bash
+# Create a new PRP
+cp PRPs/templates/prp_base.md PRPs/my-feature.md
+
+# Edit the PRP
+nano PRPs/my-feature.md
+
+# Run with AI
+python PRPs/run_prp.py PRPs/my-feature.md
+```
+
+## Project Structure
+```
+my-project-template/
+├── PRPs/                    # PRP system
+├── scripts/                 # Automation scripts
+├── src/                     # Template source code
+├── docs/                    # Documentation
+└── README.md               # Template documentation
+```
+
+## Customization
+
+### Adding New Technologies
+1. Update `scripts/detect-tech-stack.py`
+2. Create corresponding ai_docs
+3. Update template documentation
+
+### Modifying Patterns
+1. Edit ai_docs files with your patterns
+2. Update PRP templates if needed
+3. Test with sample PRPs
+
+## License
+[Your License]
+```
+
+### Step 4: Set Up GitHub Template
+
+1. **Push to GitHub**
+```bash
+git add .
+git commit -m "Initial template setup"
+git push -u origin main
+```
+
+2. **Enable template option**
+- Go to repository settings
+- Enable "Template repository" option
+- Add template description and topics
+
+### Step 5: Create Template Examples
+
+```bash
+# Create example PRPs
+mkdir -p PRPs/examples
+cp PRPs/templates/prp_base.md PRPs/examples/sample-feature.md
+# Edit with template-specific examples
+```
+
+### Step 6: Set Up Distribution
+
+#### Option A: NPM Package
+```json
+{
+  "name": "create-my-template",
+  "version": "1.0.0",
+  "description": "Create new projects with PRP system",
+  "bin": {
+    "create-my-template": "./bin/create.js"
+  },
+  "files": [
+    "template/",
+    "bin/"
+  ]
+}
+```
+
+#### Option B: GitHub Template
+- Use GitHub's template feature
+- Share template URL with team
+- Document usage instructions
+
+## Using Project Templates
+
+### Method 1: GitHub Template
+
+1. Go to template repository
+2. Click "Use this template"
+3. Fill in repository details
+4. Clone new repository
+5. Follow setup instructions
+
+### Method 2: Manual Copy
+
+```bash
+# Clone template
+git clone https://github.com/your-username/my-project-template.git my-new-project
+cd my-new-project
+
+# Remove template-specific files
+rm -rf .git
+rm README.md
+
+# Initialize new repository
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+### Method 3: Automated Setup
+
+```bash
+# Download and set up PRP system
+curl -sSL https://raw.githubusercontent.com/your-username/my-project-template/main/scripts/setup-prp-system.sh | bash
+
+# Detect tech stack
+python scripts/detect-tech-stack.py
+```
+
+## Template Best Practices
+
+### 1. Keep Templates Focused
+
+- Create specific templates for different use cases
+- Don't include unnecessary technologies
+- Focus on common patterns and conventions
+
+### 2. Maintain ai_docs Quality
+
+- Include real, working code examples
+- Keep patterns consistent with template stack
+- Update patterns as technologies evolve
+
+### 3. Provide Clear Documentation
+
+- Explain template purpose and use cases
+- Include setup and usage instructions
+- Document customization options
+
+### 4. Test Templates Regularly
+
+- Create test projects using templates
+- Verify PRP system works correctly
+- Update examples and documentation
+
+### 5. Version Templates
+
+- Use semantic versioning for templates
+- Maintain changelog of updates
+- Provide migration guides
+
+## Advanced Template Features
+
+### 1. CI/CD Integration
+
+```yaml
+# .github/workflows/template-test.yml
+name: Template Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Test PRP system
+        run: |
+          python scripts/detect-tech-stack.py
+          python PRPs/run_prp.py PRPs/examples/sample-feature.md --validate-only
+          
+      - name: Run tests
+        run: npm test
+```
+
+### 2. Template Validation
+
+```python
+# scripts/validate-template.py
+def validate_template():
+    required_files = [
+        'PRPs/templates/prp_base.md',
+        'PRPs/run_prp.py',
+        'scripts/setup-prp-system.sh',
+        'README.md'
+    ]
+    
+    missing_files = []
+    for file_path in required_files:
+        if not os.path.exists(file_path):
+            missing_files.append(file_path)
+    
+    if missing_files:
+        print("❌ Missing required template files:")
+        for file_path in missing_files:
+            print(f"  - {file_path}")
+        return False
+    
+    print("✅ Template validation passed")
+    return True
+```
+
+### 3. Package.json Integration
+
+```json
+{
+  "name": "my-project-template",
+  "version": "1.0.0",
+  "description": "Project template with PRP system",
+  "scripts": {
+    "setup-prp": "./scripts/setup-prp-system.sh",
+    "detect-stack": "python scripts/detect-tech-stack.py",
+    "validate-prp": "python PRPs/run_prp.py PRPs/examples/sample-feature.md --validate-only"
+  },
+  "files": ["PRPs/", "scripts/"]
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Template not working in new projects**
+   - Check file permissions
+   - Verify script paths
+   - Test in clean environment
+
+2. **ai_docs not relevant to new project**
+   - Update tech stack detection
+   - Create more generic patterns
+   - Allow easy customization
+
+3. **Setup script fails**
+   - Check Python installation
+   - Verify file permissions
+   - Test script manually
+
+## Distribution Options
+
+### 1. GitHub Template Repository
+
+- Most common approach
+- Easy to use and maintain
+- Good for team collaboration
+
+### 2. NPM Package
+
+- Good for Node.js projects
+- Easy to install and update
+- Can include CLI tools
+
+### 3. Docker Image
+
+- Good for complex setups
+- Consistent environment
+- Easy deployment
+
+### 4. Git Submodules
+
+- Good for shared components
+- Version control integration
+- Easy updates
+
+## Success Metrics
+
+Track these metrics to measure template effectiveness:
+
+- **Adoption rate**: How many projects use the template
+- **Setup time**: Time to get new project running
+- **Consistency**: Code quality across projects
+- **Maintenance**: Time spent updating templates
+- **Team satisfaction**: Developer feedback
+
+---
+
+This systematic approach ensures that every new project can quickly adopt the PRP system and benefit from AI-assisted development while maintaining code quality and consistency across all your projects.
