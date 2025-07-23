@@ -33,6 +33,14 @@ cp PRPs/templates/prp_base.md PRPs/my-feature.md
 python PRPs/run_prp.py PRPs/my-feature.md
 ```
 
+### 5. Use Claude Slash Commands (Optional)
+```bash
+# In Claude Code, type "/" to see available commands
+/prp-base-create implement user authentication
+/prp-base-execute PRPs/my-feature.md
+/review-general src/
+```
+
 ## 📋 What's Included
 
 ### Core PRP System
@@ -40,6 +48,7 @@ python PRPs/run_prp.py PRPs/my-feature.md
 - **Python Runner**: Script to execute PRPs with AI
 - **Validation**: Built-in PRP structure validation
 - **Examples**: Sample PRPs demonstrating best practices
+- **Claude Commands**: 12+ slash commands for AI-assisted development
 
 ### AI Documentation Framework (ai_docs)
 - **Technology Patterns**: Pre-built patterns for React, TypeScript, Supabase, etc.
@@ -62,28 +71,32 @@ python PRPs/run_prp.py PRPs/my-feature.md
 
 ```
 prp-system-template/
-├── PRPs/                    # PRP system core
-│   ├── templates/           # PRP templates
-│   │   └── prp_base.md     # Base PRP template
-│   ├── ai_docs/            # AI documentation framework
-│   │   ├── README.md       # AI docs guide
+├── .claude/                # Claude Code commands
+│   └── commands/           # 12+ slash commands for AI development
+├── PRPs/                   # PRP system core
+│   ├── templates/          # PRP templates
+│   │   ├── prp_base.md    # Base PRP template
+│   │   ├── prp_base_typescript.md
+│   │   ├── prp_planning.md
+│   │   ├── prp_spec.md
+│   │   └── prp_task.md
+│   ├── ai_docs/           # AI documentation framework
+│   │   ├── README.md      # AI docs guide
 │   │   ├── react-typescript-conventions.md
 │   │   ├── supabase-patterns.md
-│   │   ├── admin-dashboard-patterns.md
-│   │   └── workflow-integration.md
-│   ├── examples/           # Example PRPs
-│   │   └── example-with-ai-docs.md
-│   ├── run_prp.py         # Python runner script
-│   └── README.md          # PRP system guide
-├── scripts/                # Automation scripts
+│   │   └── [20+ additional patterns]
+│   ├── examples/          # Example PRPs
+│   ├── scripts/           # PRP runner scripts
+│   ├── run_prp.py        # Python runner script
+│   └── README.md         # PRP system guide
+├── scripts/               # Automation scripts
 │   ├── setup-prp-system.sh # Setup automation
 │   ├── detect-tech-stack.py # Tech stack detection
-│   └── setup-guide.md     # Detailed setup guide
-├── docs/                   # Documentation
-│   ├── SYSTEMATIC_SETUP_GUIDE.md
-│   ├── PROJECT_TEMPLATE_GUIDE.md
-│   └── CLAUDE.md          # Development guidelines
-└── README.md              # This file
+│   └── setup-guide.md    # Detailed setup guide
+├── docs/                  # Documentation
+├── CLAUDE.md             # Project guidelines
+├── CLAUDE_COMMANDS_GUIDE.md # Slash commands guide
+└── README.md             # This file
 ```
 
 ## 🎯 Features
@@ -93,6 +106,7 @@ prp-system-template/
 - **Context-Aware**: ai_docs provide deep project context to AI
 - **Pattern-Driven**: Follow established patterns for consistent code
 - **Quality Assurance**: Built-in validation and best practices
+- **Claude Integration**: 12+ slash commands for seamless AI development
 
 ### Technology Agnostic
 - **Multi-Stack Support**: Works with React, Vue, Angular, Node.js, Python, etc.
@@ -201,9 +215,10 @@ python scripts/detect-tech-stack.py
 
 - **[PRP System Guide](PRPs/README.md)** - Main PRP system documentation
 - **[AI Documentation Guide](PRPs/ai_docs/README.md)** - Using ai_docs effectively
+- **[Claude Commands Guide](CLAUDE_COMMANDS_GUIDE.md)** - Complete slash commands reference
 - **[Systematic Setup Guide](docs/SYSTEMATIC_SETUP_GUIDE.md)** - Complete setup process
 - **[Project Template Guide](docs/PROJECT_TEMPLATE_GUIDE.md)** - Creating reusable templates
-- **[Development Guidelines](docs/CLAUDE.md)** - Best practices and conventions
+- **[Development Guidelines](CLAUDE.md)** - Best practices and conventions
 
 ## 🚀 Getting Started
 
