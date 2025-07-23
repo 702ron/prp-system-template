@@ -153,6 +153,23 @@ Defines API contracts and interfaces.
 
 ### 🔍 Code Review & Quality
 
+#### `/review-build`
+Comprehensively reviews the current build and recommends enhancements.
+
+**Usage:**
+```
+/review-build
+/review-build performance
+/review-build "user experience and security"
+```
+
+**Features:**
+- Analyzes project structure and tech stack
+- Identifies enhancement opportunities
+- Provides tool-specific recommendations
+- Creates actionable implementation plans
+- Generates comprehensive review report
+
 #### `/review-general`
 Performs comprehensive code review.
 
@@ -334,7 +351,7 @@ Commands work seamlessly with your PRP system:
 - **Management**: `/prp-task-create`, `/api-contract-define`
 
 ### 🔍 Quality Assurance
-- **Review**: `/review-general`, `/review-staged-unstaged`
+- **Review**: `/review-build`, `/review-general`, `/review-staged-unstaged`
 - **Refactoring**: `/refactor-simple`
 - **Debugging**: `/debug-RCA`
 
@@ -375,7 +392,7 @@ Use `/smart-commit` to create meaningful commit messages.
 2. **Plan**: Use `/prp-planning-create` for new features
 3. **Specify**: Use `/prp-spec-create` for detailed requirements
 4. **Implement**: Use `/prp-base-execute` for development
-5. **Review**: Use `/review-general` for quality assurance
+5. **Review**: Use `/review-build` for comprehensive analysis, `/review-general` for code review
 6. **Commit**: Use `/smart-commit` for version control
 7. **Submit**: Use `/create-pr` for collaboration
 
