@@ -1,1 +1,409 @@
-# Claude Development Guidelinesnn## OverviewnnThis document provides comprehensive guidelines for AI-assisted development using Claude and the PRP (Product Requirement Prompt) system. These guidelines ensure consistent, high-quality code generation and maintainable development practices.nn## PRP System Integrationnn### What is a PRP?nA PRP (Product Requirement Prompt) is a structured document that provides comprehensive context to AI for generating production-ready code. It includes:n- Clear requirements and specificationsn- Technical context and architecture patternsn- AI documentation references (ai_docs)n- Implementation guidelines and success criteriann### PRP Structuren```markdownn## OverviewnBrief description of the feature or component to be developed.nn## Requirementsn### Functional Requirementsn- [ ] Requirement 1n- [ ] Requirement 2nn### Non-Functional Requirementsn- Performance: [specifications]n- Security: [requirements]n- Accessibility: [standards]nn## Technical Specificationsn### Technology Stackn- Frontend: [React/Vue/Angular/etc.]n- Backend: [Node.js/Python/Go/etc.]n- Database: [PostgreSQL/MongoDB/etc.]nn### Architecture Patternsn- State Management: [Redux/Zustand/Context/etc.]n- API Patterns: [REST/GraphQL/etc.]n- Database Patterns: [ORM/Query Builder/etc.]nn## All Needed Contextn### AI Documentation (Recommended)n- **file**: PRPs/ai_docs/[relevant-pattern].mdn  **why**: [why this pattern is relevant]nn### Project Filesn- **file**: [path to relevant file]n  **why**: [why this file is important for context]nn### External Documentationn- **url**: [external documentation URL]n  **why**: [why this documentation is needed]nn## Implementation Notesn### Critical Requirementsn- [ ] CRITICAL: [critical requirement]n- [ ] IMPORTANT: [important requirement]n- [ ] NOTE: [general note]nn### Implementation Stepsn1. [Step 1]n2. [Step 2]n3. [Step 3]nn## Expected Outputn### Code Quality Standardsn- [ ] Follows project TypeScript conventionsn- [ ] Implements proper error handlingn- [ ] Includes comprehensive testingn- [ ] Follows accessibility guidelinesnn### Deliverablesn- [ ] Component/function implementationn- [ ] Unit testsn- [ ] Integration testsn- [ ] Documentation updatesnn## Success Criterian- [ ] Feature works as specifiedn- [ ] Code follows project patternsn- [ ] Tests pass with 80%+ coveragen- [ ] Performance meets requirementsn- [ ] Accessibility standards metn```nn## AI Documentation (ai_docs) Systemnn### Purposenai_docs provide curated documentation that gives AI deep context about your project's implementation patterns. This ensures:n- Consistent code generationn- Faster developmentn- Knowledge preservationn- Project-specific contextnn### Using ai_docs in PRPsn```markdownn## All Needed Contextnn### AI Documentation (Recommended)n- **file**: PRPs/ai_docs/react-typescript-conventions.mdn  **why**: Component structure and TypeScript patternsn- **file**: PRPs/ai_docs/supabase-patterns.mdn  **why**: Database operations and authentication patternsn- **file**: PRPs/ai_docs/admin-dashboard-patterns.mdn  **why**: Admin interface patterns and conventionsn```nn### Creating New ai_docsn```markdownn# [Technology/Feature] Patternsnn## OverviewnBrief description of the patterns covered.nn## Core Patternsnn### Pattern 1: [Pattern Name]n```typescriptn// Code examplen```nn### Pattern 2: [Pattern Name]n```typescriptn// Code examplen```nn## Best Practicesn- [ ] Practice 1n- [ ] Practice 2nn## Common Pitfallsn- [ ] Pitfall 1 and how to avoid itn- [ ] Pitfall 2 and how to avoid itnn## Related Patternsn- Link to related ai_docs filesn- Cross-reference with other patternsnn## Examplesn- Real-world examples from your codebasen- Common use cases and implementationsn```nn## Development Commandsnn### PRP System Commandsn```bashn# Set up PRP systemn./scripts/setup-prp-system.shnn# Detect technology stacknpython scripts/detect-tech-stack.pynn# Create new PRPncp PRPs/templates/prp_base.md PRPs/my-feature.mdnn# Validate PRP structurenpython PRPs/run_prp.py PRPs/my-feature.md --validate-onlynn# Run PRP with AInpython PRPs/run_prp.py PRPs/my-feature.mdn```nn### AI-Assisted Development Workflown1. **Create PRP**: Copy base template and fill in requirementsn2. **Reference ai_docs**: Include relevant pattern documentationn3. **Run with AI**: Execute PRP to generate coden4. **Review and Iterate**: Refine PRP based on output qualityn5. **Implement**: Copy generated code to project filesn6. **Test**: Ensure code meets requirements and standardsnn## Best Practices for PRPsnn### 1. Be Specific and Detailedn- Include exact function names and patternsn- Specify error handling requirementsn- Define performance expectationsn- Reference existing code patternsnn### 2. Reference ai_docsn- Always include relevant ai_docsn- Explain why each ai_doc is relevantn- Cross-reference related patternsn- Keep ai_docs updated with new patternsnn### 3. Include Project Contextn- Reference specific project filesn- Include external documentation URLsn- Explain project-specific requirementsn- Consider existing architecturenn### 4. Define Clear Success Criterian- Specify test requirementsn- Define performance metricsn- Include accessibility standardsn- Set code quality expectationsnn### 5. Iterate and Improven- Refine PRPs based on AI outputn- Update ai_docs with successful patternsn- Learn from failed attemptsn- Share successful PRPs with teamnn## AI Integration Guidelinesnn### Claude API Integrationn```pythonn# Example integration with Claude APIndef run_with_claude(prp_content):n    # Set up Claude API clientn    client = anthropic.Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))n    n    # Prepare prompt with PRP contentn    prompt = f"""n    You are an expert software developer. Please implement the following feature:n    n    {prp_content}n    n    Please provide:n    1. Complete implementation coden    2. Unit testsn    3. Brief explanation of the implementationn    4. Any additional considerationsn    """n    n    # Send to Clauden    response = client.messages.create(n        model="claude-3-sonnet-20240229",n        max_tokens=4000,n        messages=[{"role": "user", "content": prompt}]n    )n    n    return response.content[0].textn```nn### Custom AI Integrationn```pythonn# Modify PRPs/run_prp.py for custom AI integrationndef run_with_ai(prp_content, ai_tool="claude"):n    if ai_tool == "claude":n        return run_with_claude(prp_content)n    elif ai_tool == "openai":n        return run_with_openai(prp_content)n    elif ai_tool == "custom":n        return run_with_custom_ai(prp_content)n    else:n        print(f"Unsupported AI tool: {ai_tool}")n        return Nonen```nn## Code Quality Standardsnn### TypeScript/JavaScript Standardsn- Use TypeScript for type safetyn- Follow ESLint and Prettier configurationsn- Implement proper error handlingn- Use async/await for asynchronous operationsn- Include JSDoc comments for complex functionsnn### React Component Standardsn- Use functional components with hooksn- Implement proper prop typesn- Follow component naming conventionsn- Use React.memo for performance optimizationn- Implement proper error boundariesnn### Testing Standardsn- Write unit tests for all functionsn- Use React Testing Library for componentsn- Achieve 80%+ code coveragen- Test error scenariosn- Use meaningful test descriptionsnn### Database Standardsn- Use prepared statements for queriesn- Implement proper connection poolingn- Handle database errors gracefullyn- Use transactions for complex operationsn- Follow naming conventionsnn## Project-Specific Guidelinesnn### React/TypeScript Projectsn- Use shadcn/ui componentsn- Follow Tailwind CSS patternsn- Implement proper state managementn- Use React Query for data fetchingn- Follow component composition patternsnn### Supabase Projectsn- Use Supabase client for database operationsn- Implement Row Level Security (RLS)n- Use Supabase Auth for authenticationn- Follow Supabase best practicesn- Use real-time subscriptions appropriatelynn### Admin Dashboard Projectsn- Follow admin interface patternsn- Implement proper data visualizationn- Use consistent UI componentsn- Follow accessibility guidelinesn- Implement proper error handlingnn## Troubleshootingnn### Common Issuesnn1. **AI generates inconsistent code**n   - Review ai_docs for completenessn   - Update patterns to match actual codebasen   - Be more specific in PRP requirementsn   - Check for conflicting patternsnn2. **PRPs take too long to create**n   - Use templates and examplesn   - Reuse patterns from existing ai_docsn   - Start with simple PRPs and iteraten   - Focus on essential requirements firstnn3. **Generated code doesn't work**n   - Verify ai_docs are up to daten   - Check for missing dependenciesn   - Review error handlingn   - Test generated code thoroughlynn4. **Team adoption is slow**n   - Provide training and examplesn   - Start with simple featuresn   - Show successful implementationsn   - Create team-specific ai_docsnn## Success MetricsnnTrack these metrics to measure AI-assisted development effectiveness:nn### Code Quality Metricsn- Reduced bug countn- Improved code consistencyn- Faster code reviewsn- Higher test coveragenn### Development Speed Metricsn- Faster feature deliveryn- Reduced development timen- Quicker onboardingn- More efficient debuggingnn### Team Productivity Metricsn- Increased developer satisfactionn- Reduced knowledge silosn- Better code documentationn- Improved team collaborationnn## Future Enhancementsnn### Advanced AI Featuresn- Pattern learning from successful coden- Automatic ai_docs updatesn- Cross-project pattern sharingn- Intelligent PRP suggestionsnn### Integration Improvementsn- IDE plugin integrationn- Real-time AI assistancen- Automated code reviewn- Performance optimization suggestionsnn### Team Collaborationn- Shared pattern libraryn- PRP review workflowsn- Pattern versioningn- Team-specific customizationsnn---nnThese guidelines ensure that AI-assisted development with Claude and the PRP system produces consistent, high-quality, and maintainable code while maximizing development efficiency and team productivity.n
+# Claude Development Guidelines
+
+## Overview
+
+This document provides comprehensive guidelines for AI-assisted development using Claude and the PRP (Product Requirement Prompt) system. These guidelines ensure consistent, high-quality code generation and maintainable development practices.
+
+## PRP System Integration
+
+### What is a PRP?
+
+A PRP (Product Requirement Prompt) is a structured document that provides comprehensive context to AI for generating production-ready code. It includes:
+
+- Clear requirements and specifications
+- Technical context and architecture patterns
+- AI documentation references (ai_docs)
+- Implementation guidelines and success criteria
+
+### PRP Structure
+
+```markdown
+## Overview
+Brief description of the feature or component to be developed.
+
+## Requirements
+### Functional Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+
+### Non-Functional Requirements
+- Performance: [specifications]
+- Security: [requirements]
+- Accessibility: [standards]
+
+## Technical Specifications
+### Technology Stack
+- Frontend: [React/Vue/Angular/etc.]
+- Backend: [Node.js/Python/Go/etc.]
+- Database: [PostgreSQL/MongoDB/etc.]
+
+### Architecture Patterns
+- State Management: [Redux/Zustand/Context/etc.]
+- API Patterns: [REST/GraphQL/etc.]
+- Database Patterns: [ORM/Query Builder/etc.]
+
+## All Needed Context
+### AI Documentation (Recommended)
+- **file**: PRPs/ai_docs/[relevant-pattern].md
+  **why**: [why this pattern is relevant]
+
+### Project Files
+- **file**: [path to relevant file]
+  **why**: [why this file is important for context]
+
+### External Documentation
+- **url**: [external documentation URL]
+  **why**: [why this documentation is needed]
+
+## Implementation Notes
+### Critical Requirements
+- [ ] CRITICAL: [critical requirement]
+- [ ] IMPORTANT: [important requirement]
+- [ ] NOTE: [general note]
+
+### Implementation Steps
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Expected Output
+### Code Quality Standards
+- [ ] Follows project TypeScript conventions
+- [ ] Implements proper error handling
+- [ ] Includes comprehensive testing
+- [ ] Follows accessibility guidelines
+
+### Deliverables
+- [ ] Component/function implementation
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Documentation updates
+
+## Success Criteria
+- [ ] Feature works as specified
+- [ ] Code follows project patterns
+- [ ] Tests pass with 80%+ coverage
+- [ ] Performance meets requirements
+- [ ] Accessibility standards met
+```
+
+## AI Documentation (ai_docs) System
+
+### Purpose
+
+ai_docs provide curated documentation that gives AI deep context about your project's implementation patterns. This ensures:
+
+- Consistent code generation
+- Faster development
+- Knowledge preservation
+- Project-specific context
+
+### Using ai_docs in PRPs
+
+```markdown
+## All Needed Context
+
+### AI Documentation (Recommended)
+- **file**: PRPs/ai_docs/react-typescript-conventions.md
+  **why**: Component structure and TypeScript patterns
+- **file**: PRPs/ai_docs/supabase-patterns.md
+  **why**: Database operations and authentication patterns
+- **file**: PRPs/ai_docs/admin-dashboard-patterns.md
+  **why**: Admin interface patterns and conventions
+```
+
+### Creating New ai_docs
+
+```markdown
+# [Technology/Feature] Patterns
+
+## Overview
+Brief description of the patterns covered.
+
+## Core Patterns
+
+### Pattern 1: [Pattern Name]
+```typescript
+// Code example
+```
+
+### Pattern 2: [Pattern Name]
+```typescript
+// Code example
+```
+
+## Best Practices
+- [ ] Practice 1
+- [ ] Practice 2
+
+## Common Pitfalls
+- [ ] Pitfall 1 and how to avoid it
+- [ ] Pitfall 2 and how to avoid it
+
+## Related Patterns
+- Link to related ai_docs files
+- Cross-reference with other patterns
+
+## Examples
+- Real-world examples from your codebase
+- Common use cases and implementations
+```
+
+## Development Commands
+
+### PRP System Commands
+
+```bash
+# Set up PRP system
+./scripts/setup-prp-system.sh
+
+# Detect technology stack
+python scripts/detect-tech-stack.py
+
+# Create new PRP
+cp PRPs/templates/prp_base.md PRPs/my-feature.md
+
+# Validate PRP structure
+python PRPs/run_prp.py PRPs/my-feature.md --validate-only
+
+# Run PRP with AI
+python PRPs/run_prp.py PRPs/my-feature.md
+```
+
+### AI-Assisted Development Workflow
+
+1. **Create PRP**: Copy base template and fill in requirements
+2. **Reference ai_docs**: Include relevant pattern documentation
+3. **Run with AI**: Execute PRP to generate code
+4. **Review and Iterate**: Refine PRP based on output quality
+5. **Implement**: Copy generated code to project files
+6. **Test**: Ensure code meets requirements and standards
+
+## Best Practices for PRPs
+
+### 1. Be Specific and Detailed
+
+- Include exact function names and patterns
+- Specify error handling requirements
+- Define performance expectations
+- Reference existing code patterns
+
+### 2. Reference ai_docs
+
+- Always include relevant ai_docs
+- Explain why each ai_doc is relevant
+- Cross-reference related patterns
+- Keep ai_docs updated with new patterns
+
+### 3. Include Project Context
+
+- Reference specific project files
+- Include external documentation URLs
+- Explain project-specific requirements
+- Consider existing architecture
+
+### 4. Define Clear Success Criteria
+
+- Specify test requirements
+- Define performance metrics
+- Include accessibility standards
+- Set code quality expectations
+
+### 5. Iterate and Improve
+
+- Refine PRPs based on AI output
+- Update ai_docs with successful patterns
+- Learn from failed attempts
+- Share successful PRPs with team
+
+## AI Integration Guidelines
+
+### Claude API Integration
+
+```python
+# Example integration with Claude API
+import anthropic
+import os
+
+def run_with_claude(prp_content):
+    # Set up Claude API client
+    client = anthropic.Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
+    
+    # Prepare prompt with PRP content
+    prompt = f"""
+    You are an expert software developer. Please implement the following feature:
+    
+    {prp_content}
+    
+    Please provide:
+    1. Complete implementation code
+    2. Unit tests
+    3. Brief explanation of the implementation
+    4. Any additional considerations
+    """
+    
+    # Send to Claude
+    response = client.messages.create(
+        model="claude-3-sonnet-20240229",
+        max_tokens=4000,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    
+    return response.content[0].text
+```
+
+### Custom AI Integration
+
+```python
+# Modify PRPs/run_prp.py for custom AI integration
+def run_with_ai(prp_content, ai_tool="claude"):
+    if ai_tool == "claude":
+        return run_with_claude(prp_content)
+    elif ai_tool == "openai":
+        return run_with_openai(prp_content)
+    elif ai_tool == "custom":
+        return run_with_custom_ai(prp_content)
+    else:
+        print(f"Unsupported AI tool: {ai_tool}")
+        return None
+```
+
+## Code Quality Standards
+
+### TypeScript/JavaScript Standards
+
+- Use TypeScript for type safety
+- Follow ESLint and Prettier configurations
+- Implement proper error handling
+- Use async/await for asynchronous operations
+- Include JSDoc comments for complex functions
+
+### React Component Standards
+
+- Use functional components with hooks
+- Implement proper prop types
+- Follow component naming conventions
+- Use React.memo for performance optimization
+- Implement proper error boundaries
+
+### Testing Standards
+
+- Write unit tests for all functions
+- Use React Testing Library for components
+- Achieve 80%+ code coverage
+- Test error scenarios
+- Use meaningful test descriptions
+
+### Database Standards
+
+- Use prepared statements for queries
+- Implement proper connection pooling
+- Handle database errors gracefully
+- Use transactions for complex operations
+- Follow naming conventions
+
+## Project-Specific Guidelines
+
+### React/TypeScript Projects
+
+- Use shadcn/ui components
+- Follow Tailwind CSS patterns
+- Implement proper state management
+- Use React Query for data fetching
+- Follow component composition patterns
+
+### Supabase Projects
+
+- Use Supabase client for database operations
+- Implement Row Level Security (RLS)
+- Use Supabase Auth for authentication
+- Follow Supabase best practices
+- Use real-time subscriptions appropriately
+
+### Admin Dashboard Projects
+
+- Follow admin interface patterns
+- Implement proper data visualization
+- Use consistent UI components
+- Follow accessibility guidelines
+- Implement proper error handling
+
+## Troubleshooting
+
+### Common Issues
+
+1. **AI generates inconsistent code**
+   - Review ai_docs for completeness
+   - Update patterns to match actual codebase
+   - Be more specific in PRP requirements
+   - Check for conflicting patterns
+
+2. **PRPs take too long to create**
+   - Use templates and examples
+   - Reuse patterns from existing ai_docs
+   - Start with simple PRPs and iterate
+   - Focus on essential requirements first
+
+3. **Generated code doesn't work**
+   - Verify ai_docs are up to date
+   - Check for missing dependencies
+   - Review error handling
+   - Test generated code thoroughly
+
+4. **Team adoption is slow**
+   - Provide training and examples
+   - Start with simple features
+   - Show successful implementations
+   - Create team-specific ai_docs
+
+## Success Metrics
+
+Track these metrics to measure AI-assisted development effectiveness:
+
+### Code Quality Metrics
+
+- Reduced bug count
+- Improved code consistency
+- Faster code reviews
+- Higher test coverage
+
+### Development Speed Metrics
+
+- Faster feature delivery
+- Reduced development time
+- Quicker onboarding
+- More efficient debugging
+
+### Team Productivity Metrics
+
+- Increased developer satisfaction
+- Reduced knowledge silos
+- Better code documentation
+- Improved team collaboration
+
+## Future Enhancements
+
+### Advanced AI Features
+
+- Pattern learning from successful code
+- Automatic ai_docs updates
+- Cross-project pattern sharing
+- Intelligent PRP suggestions
+
+### Integration Improvements
+
+- IDE plugin integration
+- Real-time AI assistance
+- Automated code review
+- Performance optimization suggestions
+
+### Team Collaboration
+
+- Shared pattern library
+- PRP review workflows
+- Pattern versioning
+- Team-specific customizations
+
+---
+
+These guidelines ensure that AI-assisted development with Claude and the PRP system produces consistent, high-quality, and maintainable code while maximizing development efficiency and team productivity.
