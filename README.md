@@ -4,19 +4,35 @@ A comprehensive PRP (Product Requirement Prompt) system template for AI-assisted
 
 ## 🚀 Quick Start (5 Minutes)
 
-### 0. Setup Slash Commands (Required for Claude Code)
-Before using any slash commands, you need to set up the `.claude` directory in your project:
+### 0. Setup Requirements
+
+#### For Complete PRP System (Recommended)
+To get the full PRP system with all features, clone the entire repository:
 
 ```bash
-# Option 1: Clone this template repository
+# Clone the complete template repository
 git clone https://github.com/702ron/prp-system-template.git my-new-project
 cd my-new-project
+```
 
-# Option 2: Copy the .claude directory to your existing project
+This includes:
+- ✅ **Slash Commands** (`.claude/` directory)
+- ✅ **PRP Templates** (`PRPs/templates/`)
+- ✅ **AI Documentation** (`PRPs/ai_docs/`)
+- ✅ **Python Runner Scripts** (`PRPs/run_prp.py`)
+- ✅ **Example PRPs** (`PRPs/examples/`)
+- ✅ **Setup Scripts** (`scripts/`)
+- ✅ **Documentation** (`docs/`, `CLAUDE.md`, etc.)
+
+#### For Slash Commands Only (Minimal)
+If you only want the slash commands in an existing project:
+
+```bash
+# Copy just the .claude directory to your existing project
 cp -r prp-system-template/.claude /path/to/your/project/
 
-# Option 3: Download just the .claude directory
-curl -L https://github.com/702ron/prp-system-template/archive/main.tar.gz | tar -xz --strip-components=1 prp-system-template-main/.claude
+# Then run setup to add PRP system
+/setup-prp-system --full
 ```
 
 **Note**: The `.claude` directory contains all the slash commands. Without it, the commands won't be available in Claude Code.
@@ -77,7 +93,7 @@ python PRPs/run_prp.py PRPs/my-feature.md
 
 ### 1. **New Project** (Recommended for new development)
 ```bash
-# Clone the template and start fresh
+# Clone the complete template and start fresh
 git clone https://github.com/702ron/prp-system-template.git my-new-project
 cd my-new-project
 
@@ -85,36 +101,57 @@ cd my-new-project
 /new-project "A React application for e-commerce with payment processing"
 ```
 
-### 2. **Existing Project** (Add PRP system to current project)
+### 2. **Existing Project** (Add complete PRP system to current project)
+```bash
+# Option A: Copy everything to your existing project
+cp -r prp-system-template/* /path/to/your/project/
+
+# Option B: Copy just .claude and let setup create the rest
+cp -r prp-system-template/.claude /path/to/your/project/
+/analyze-project "I want to add real-time notifications and improve performance"
+```
+
+### 3. **Slash Commands Only** (Minimal setup)
 ```bash
 # Copy just the .claude directory to your existing project
 cp -r prp-system-template/.claude /path/to/your/project/
 
-# Use the analyze project command
-/analyze-project "I want to add real-time notifications and improve performance"
-```
-
-### 3. **PRP System Only** (Minimal setup)
-```bash
-# Copy the .claude directory and run setup
-cp -r prp-system-template/.claude /path/to/your/project/
+# Then run setup to add PRP system infrastructure
 /setup-prp-system --full
 ```
 
 ## 📋 What's Included
 
-### Core PRP System
-- **PRP Templates**: Structured prompts for AI-assisted development
-- **Python Runner**: Script to execute PRPs with AI
-- **Validation**: Built-in PRP structure validation
-- **Examples**: Sample PRPs demonstrating best practices
-- **Claude Commands**: 12+ slash commands for AI-assisted development
+### Complete PRP System Components
 
-### AI Documentation Framework (ai_docs)
+#### Core PRP System
+- **PRP Templates** (`PRPs/templates/`): Structured prompts for AI-assisted development
+- **Python Runner** (`PRPs/run_prp.py`): Script to execute PRPs with AI
+- **Validation**: Built-in PRP structure validation
+- **Examples** (`PRPs/examples/`): Sample PRPs demonstrating best practices
+
+#### AI Documentation Framework (`PRPs/ai_docs/`)
 - **Technology Patterns**: Pre-built patterns for React, TypeScript, Supabase, etc.
 - **Convention Guides**: Coding standards and best practices
 - **Integration Patterns**: Database, API, and workflow patterns
 - **Extensible**: Easy to add new patterns for your tech stack
+
+#### Claude Slash Commands (`.claude/commands/`)
+- **15+ Commands**: Complete AI-assisted development workflow
+- **Project Management**: `/new-project`, `/analyze-project`, `/setup-prp-system`
+- **PRP Workflow**: `/prp-base-create`, `/prp-base-execute`, etc.
+- **Quality Assurance**: `/review-general`, `/refactor-simple`, etc.
+
+#### Automation Scripts (`scripts/`)
+- **Setup Script**: One-command PRP system installation
+- **Tech Stack Detection**: Automatic detection of project technologies
+- **Template Validation**: Ensures proper setup and structure
+
+#### Documentation
+- **Setup Guides**: Step-by-step installation instructions
+- **Usage Examples**: Real-world PRP examples
+- **Best Practices**: Guidelines for effective AI-assisted development
+- **Troubleshooting**: Common issues and solutions
 
 ### Automation Scripts
 - **Setup Script**: One-command PRP system installation
@@ -276,6 +313,25 @@ If you don't see the slash commands in Claude Code:
 4. **Check file permissions**:
    ```bash
    chmod -R 644 .claude/commands/
+   ```
+
+### PRP System Not Working
+If slash commands work but PRP system features don't:
+
+1. **Check if you have the complete system**:
+   ```bash
+   ls -la PRPs/
+   # Should show: templates/, ai_docs/, examples/, run_prp.py
+   ```
+
+2. **If missing components, run setup**:
+   ```bash
+   /setup-prp-system --full
+   ```
+
+3. **Or copy the complete repository**:
+   ```bash
+   cp -r prp-system-template/* /path/to/your/project/
    ```
 
 ### Common Issues
