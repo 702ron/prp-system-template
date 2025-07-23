@@ -4,29 +4,41 @@ A comprehensive PRP (Product Requirement Prompt) system template for AI-assisted
 
 ## 🚀 Quick Start (5 Minutes)
 
-### 1. Use This Template
+### 1. Choose Your Starting Point
+
+#### For New Projects
+Start from scratch with comprehensive setup:
 ```bash
-# Click "Use this template" on GitHub, or clone directly
-git clone https://github.com/702ron/prp-system-template.git my-new-project
-cd my-new-project
+# In Claude Code
+/new-project "A web application for task management with user authentication"
 ```
 
-### 2. Set Up PRP System
+#### For Existing Projects
+Enhance your existing codebase:
+```bash
+# In Claude Code
+/analyze-project "I want to add user authentication and improve the UI"
+```
+
+#### For PRP System Only
+Add PRP system to any project:
 ```bash
 # Option 1: Run the automated setup script
 ./scripts/setup-prp-system.sh
 
 # Option 2: Use Claude slash command (in Claude Code)
 /setup-prp-system
+/setup-prp-system --tech-stack  # With tech stack detection
+/setup-prp-system --full        # Complete setup with examples
 ```
 
-### 3. Detect Your Tech Stack
+### 2. Detect Your Tech Stack (Optional)
 ```bash
 # Automatically detect your project's technology stack and create appropriate ai_docs
 python scripts/detect-tech-stack.py
 ```
 
-### 4. Create Your First PRP
+### 3. Create Your First PRP
 ```bash
 # Create a new PRP for your feature
 cp PRPs/templates/prp_base.md PRPs/my-feature.md
@@ -36,10 +48,9 @@ cp PRPs/templates/prp_base.md PRPs/my-feature.md
 python PRPs/run_prp.py PRPs/my-feature.md
 ```
 
-### 5. Use Claude Slash Commands (Optional)
+### 4. Use Claude Slash Commands (Optional)
 ```bash
 # In Claude Code, type "/" to see available commands
-/setup-prp-system --full  # Complete setup with examples
 /prp-base-create implement user authentication
 /prp-base-execute PRPs/my-feature.md
 /review-general src/

@@ -6,6 +6,37 @@ This PRP system template now includes comprehensive Claude slash commands from t
 
 ## Available Commands
 
+### 🎯 Project Management
+#### `/new-project`
+Creates a new project from scratch with comprehensive setup.
+
+**Usage:**
+```
+/new-project "A web application for task management with user authentication"
+```
+
+**Features:**
+- Creates `claude.md` with project guidelines
+- Creates `initial.md` with initialization details
+- Sets up PRP system for structured development
+- Creates basic project structure and documentation
+- Prompts for project description if not provided
+
+#### `/analyze-project`
+Analyzes and enhances existing projects.
+
+**Usage:**
+```
+/analyze-project "I want to add user authentication and improve the UI"
+```
+
+**Features:**
+- Scans existing project structure
+- Creates or updates `claude.md` for enhancement
+- Sets up PRP system for existing projects
+- Preserves existing functionality
+- Creates enhancement-focused templates
+
 ### 🚀 PRP Creation & Execution
 
 #### `/prp-base-create`
@@ -292,6 +323,11 @@ Commands work seamlessly with your PRP system:
 
 ## Command Categories
 
+### 🎯 Project Management
+- **New Projects**: `/new-project` - Start from scratch
+- **Existing Projects**: `/analyze-project` - Enhance existing codebase
+- **System Setup**: `/setup-prp-system` - Initialize PRP system
+
 ### 🎯 PRP Workflow
 - **Creation**: `/prp-base-create`, `/prp-planning-create`, `/prp-spec-create`
 - **Execution**: `/prp-base-execute`, `/prp-spec-execute`, `/prp-task-execute`
@@ -309,10 +345,15 @@ Commands work seamlessly with your PRP system:
 
 ## Best Practices
 
-### 1. Start with Context
+### 1. Choose the Right Starting Point
+- **New Projects**: Use `/new-project` to start from scratch with comprehensive setup
+- **Existing Projects**: Use `/analyze-project` to enhance existing codebase
+- **PRP System Only**: Use `/setup-prp-system` to add PRP system to any project
+
+### 2. Start with Context
 Always use `/prime-core` when starting a new session to load project context.
 
-### 2. Setup PRP System
+### 3. Setup PRP System
 Use `/setup-prp-system` to quickly initialize the PRP system in new projects.
 
 ### 3. Use PRPs for Features
@@ -330,12 +371,13 @@ Use `/smart-commit` to create meaningful commit messages.
 ## Integration with Your Workflow
 
 ### Development Cycle
-1. **Plan**: Use `/prp-planning-create` for new features
-2. **Specify**: Use `/prp-spec-create` for detailed requirements
-3. **Implement**: Use `/prp-base-execute` for development
-4. **Review**: Use `/review-general` for quality assurance
-5. **Commit**: Use `/smart-commit` for version control
-6. **Submit**: Use `/create-pr` for collaboration
+1. **Project Setup**: Use `/new-project` or `/analyze-project` to initialize
+2. **Plan**: Use `/prp-planning-create` for new features
+3. **Specify**: Use `/prp-spec-create` for detailed requirements
+4. **Implement**: Use `/prp-base-execute` for development
+5. **Review**: Use `/review-general` for quality assurance
+6. **Commit**: Use `/smart-commit` for version control
+7. **Submit**: Use `/create-pr` for collaboration
 
 ### Team Collaboration
 - Use `/onboarding` for new team members
