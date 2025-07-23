@@ -1,1 +1,346 @@
-#!/usr/bin/env python3n"""nDetect project technology stack and suggest ai_docs to create.n"""nnimport osnimport jsonnfrom pathlib import Pathnndef detect_tech_stack():n    """Detect technology stack from project files."""n    tech_stack = {n        'frontend': [],n        'backend': [],n        'database': [],n        'tools': []n    }n    n    # Check for package.json (Node.js/React/Vue/Angular)n    if os.path.exists('package.json'):n        with open('package.json', 'r') as f:n            package_data = json.load(f)n            dependencies = package_data.get('dependencies', {})n            dev_dependencies = package_data.get('devDependencies', {})n            all_deps = {**dependencies, **dev_dependencies}n            n            # Frontend frameworksn            if 'react' in all_deps:n                tech_stack['frontend'].append('React')n            if 'vue' in all_deps:n                tech_stack['frontend'].append('Vue')n            if 'angular' in all_deps:n                tech_stack['frontend'].append('Angular')n            if 'next' in all_deps:n                tech_stack['frontend'].append('Next.js')n            if 'nuxt' in all_deps:n                tech_stack['frontend'].append('Nuxt.js')n            n            # UI librariesn            if 'tailwindcss' in all_deps:n                tech_stack['frontend'].append('Tailwind CSS')n            if '@mui/material' in all_deps:n                tech_stack['frontend'].append('Material-UI')n            if '@chakra-ui/react' in all_deps:n                tech_stack['frontend'].append('Chakra UI')n            if 'antd' in all_deps:n                tech_stack['frontend'].append('Ant Design')n            n            # State managementn            if 'redux' in all_deps:n                tech_stack['frontend'].append('Redux')n            if 'zustand' in all_deps:n                tech_stack['frontend'].append('Zustand')n            if '@tanstack/react-query' in all_deps:n                tech_stack['frontend'].append('TanStack Query')n            n            # Backend frameworksn            if 'express' in all_deps:n                tech_stack['backend'].append('Express')n            if 'fastify' in all_deps:n                tech_stack['backend'].append('Fastify')n            if 'koa' in all_deps:n                tech_stack['backend'].append('Koa')n            if 'nest' in all_deps:n                tech_stack['backend'].append('NestJS')n            n            # TypeScriptn            if 'typescript' in all_deps:n                tech_stack['tools'].append('TypeScript')n    n    # Check for Python files and requirementsn    if any(Path('.').glob('*.py')):n        tech_stack['backend'].append('Python')n    n    if os.path.exists('requirements.txt'):n        with open('requirements.txt', 'r') as f:n            requirements = f.read().lower()n            if 'django' in requirements:n                tech_stack['backend'].append('Django')n            if 'flask' in requirements:n                tech_stack['backend'].append('Flask')n            if 'fastapi' in requirements:n                tech_stack['backend'].append('FastAPI')n            if 'celery' in requirements:n                tech_stack['backend'].append('Celery')n    n    # Check for pyproject.tomln    if os.path.exists('pyproject.toml'):n        tech_stack['backend'].append('Python')n    n    # Check for Go filesn    if any(Path('.').glob('*.go')):n        tech_stack['backend'].append('Go')n    n    # Check for Rust filesn    if any(Path('.').glob('*.rs')) or os.path.exists('Cargo.toml'):n        tech_stack['backend'].append('Rust')n    n    # Check for database filesn    if os.path.exists('supabase'):n        tech_stack['database'].append('Supabase')n    if os.path.exists('prisma'):n        tech_stack['database'].append('Prisma')n    if os.path.exists('migrations'):n        tech_stack['database'].append('Database Migrations')n    if any(Path('.').glob('*.sql')):n        tech_stack['database'].append('SQL')n    n    # Check for specific database filesn    if os.path.exists('docker-compose.yml'):n        with open('docker-compose.yml', 'r') as f:n            content = f.read().lower()n            if 'postgres' in content:n                tech_stack['database'].append('PostgreSQL')n            if 'mysql' in content:n                tech_stack['database'].append('MySQL')n            if 'mongodb' in content:n                tech_stack['database'].append('MongoDB')n            if 'redis' in content:n                tech_stack['database'].append('Redis')n    n    # Check for build toolsn    if os.path.exists('vite.config.js') or os.path.exists('vite.config.ts'):n        tech_stack['tools'].append('Vite')n    if os.path.exists('webpack.config.js'):n        tech_stack['tools'].append('Webpack')n    if os.path.exists('rollup.config.js'):n        tech_stack['tools'].append('Rollup')n    n    # Check for testing frameworksn    if os.path.exists('jest.config.js') or 'jest' in tech_stack.get('tools', []):n        tech_stack['tools'].append('Jest')n    if os.path.exists('cypress.config.js'):n        tech_stack['tools'].append('Cypress')n    if os.path.exists('playwright.config.js'):n        tech_stack['tools'].append('Playwright')n    n    return tech_stacknndef suggest_ai_docs(tech_stack):n    """Suggest ai_docs to create based on tech stack."""n    suggestions = []n    n    # Frontend suggestionsn    for frontend in tech_stack['frontend']:n        if frontend == 'React':n            suggestions.extend([n                'react-typescript-conventions.md',n                'react-hooks-patterns.md',n                'react-component-patterns.md'n            ])n        elif frontend == 'Vue':n            suggestions.extend([n                'vue-composition-patterns.md',n                'vue-options-patterns.md'n            ])n        elif frontend == 'Angular':n            suggestions.extend([n                'angular-patterns.md',n                'angular-services-patterns.md'n            ])n        elif frontend == 'Next.js':n            suggestions.extend([n                'nextjs-patterns.md',n                'nextjs-routing-patterns.md'n            ])n        elif frontend == 'Tailwind CSS':n            suggestions.append('tailwind-patterns.md')n        elif frontend == 'Material-UI':n            suggestions.append('mui-patterns.md')n        elif frontend == 'Redux':n            suggestions.append('redux-patterns.md')n        elif frontend == 'Zustand':n            suggestions.append('zustand-patterns.md')n        elif frontend == 'TanStack Query':n            suggestions.append('react-query-patterns.md')n    n    # Backend suggestionsn    for backend in tech_stack['backend']:n        if backend == 'Express':n            suggestions.extend([n                'express-patterns.md',n                'nodejs-patterns.md',n                'express-middleware-patterns.md'n            ])n        elif backend == 'NestJS':n            suggestions.extend([n                'nestjs-patterns.md',n                'nestjs-module-patterns.md'n            ])n        elif backend == 'Django':n            suggestions.extend([n                'django-patterns.md',n                'django-models-patterns.md',n                'django-views-patterns.md'n            ])n        elif backend == 'Flask':n            suggestions.extend([n                'flask-patterns.md',n                'flask-blueprint-patterns.md'n            ])n        elif backend == 'FastAPI':n            suggestions.extend([n                'fastapi-patterns.md',n                'fastapi-dependency-patterns.md'n            ])n        elif backend == 'Go':n            suggestions.extend([n                'go-patterns.md',n                'go-http-patterns.md'n            ])n        elif backend == 'Rust':n            suggestions.extend([n                'rust-patterns.md',n                'rust-web-patterns.md'n            ])n    n    # Database suggestionsn    for database in tech_stack['database']:n        if database == 'Supabase':n            suggestions.extend([n                'supabase-patterns.md',n                'supabase-auth-patterns.md',n                'supabase-realtime-patterns.md'n            ])n        elif database == 'Prisma':n            suggestions.extend([n                'prisma-patterns.md',n                'prisma-migration-patterns.md'n            ])n        elif database == 'PostgreSQL':n            suggestions.append('postgresql-patterns.md')n        elif database == 'MongoDB':n            suggestions.append('mongodb-patterns.md')n        elif database == 'Redis':n            suggestions.append('redis-patterns.md')n    n    # Tool suggestionsn    for tool in tech_stack['tools']:n        if tool == 'TypeScript':n            suggestions.append('typescript-patterns.md')n        elif tool == 'Vite':n            suggestions.append('vite-patterns.md')n        elif tool == 'Jest':n            suggestions.append('jest-testing-patterns.md')n        elif tool == 'Cypress':n            suggestions.append('cypress-testing-patterns.md')n    n    # Remove duplicates and returnn    return list(set(suggestions))nndef create_ai_docs_files(suggestions):n    """Create the suggested ai_docs files with basic templates."""n    created_files = []n    n    for suggestion in suggestions:n        file_path = f"PRPs/ai_docs/{suggestion}"n        if not os.path.exists(file_path):n            # Create basic template based on file namen            template = create_basic_template(suggestion)n            n            with open(file_path, 'w') as f:n                f.write(template)n            n            created_files.append(file_path)n    n    return created_filesnndef create_basic_template(filename):n    """Create a basic template for ai_docs files."""n    name = filename.replace('.md', '').replace('-', ' ').title()n    n    return f"""# {name}nn## OverviewnnBrief description of the patterns covered in this document.nn## Core Patternsnn### Pattern 1: [Pattern Name]n```typescriptn// Code examplen```nn### Pattern 2: [Pattern Name]n```typescriptn// Code examplen```nn## Best Practicesn- [ ] Practice 1n- [ ] Practice 2nn## Common Pitfallsn- [ ] Pitfall 1 and how to avoid itn- [ ] Pitfall 2 and how to avoid itnn## Related Patternsn- Link to related ai_docs filesn- Cross-reference with other patternsnn## Examplesn- Real-world examples from your codebasen- Common use cases and implementationsn"""nndef main():n    print("🔍 Detecting technology stack...")n    tech_stack = detect_tech_stack()n    n    print("\n📋 Detected Technology Stack:")n    for category, technologies in tech_stack.items():n        if technologies:n            print(f"  {category.title()}: {', '.join(technologies)}")n    n    suggestions = suggest_ai_docs(tech_stack)n    n    print(f"\n📝 Suggested ai_docs to create:")n    for suggestion in suggestions:n        print(f"  - PRPs/ai_docs/{suggestion}")n    n    if suggestions:n        print(f"\n💡 Would you like to create these ai_docs files? (y/n): ", end="")n        response = input().lower().strip()n        n        if response in ['y', 'yes']:n            created_files = create_ai_docs_files(suggestions)n            print(f"\n✅ Created {len(created_files)} ai_docs files:")n            for file_path in created_files:n                print(f"  - {file_path}")n            n            print(f"\n📝 Next steps:")n            print(f"  1. Edit the created ai_docs files with your project's patterns")n            print(f"  2. Create your first PRP: cp PRPs/templates/prp_base.md PRPs/my-feature.md")n            print(f"  3. Reference the ai_docs in your PRP")n        else:n            print(f"\n💡 Run this command to create the suggested ai_docs:")n            print(f"  touch {' '.join([f'PRPs/ai_docs/{s}' for s in suggestions])}")n    else:n        print(f"\n💡 No specific ai_docs suggestions. Consider creating:")n        print(f"  - PRPs/ai_docs/general-patterns.md")n        print(f"  - PRPs/ai_docs/project-conventions.md")nnif __name__ == "__main__":n    main()
+#!/usr/bin/env python3
+"""
+Detect project technology stack and suggest ai_docs to create.
+"""
+
+import os
+import json
+from pathlib import Path
+
+def detect_tech_stack():
+    """Detect technology stack from project files."""
+    tech_stack = {
+        'frontend': [],
+        'backend': [],
+        'database': [],
+        'tools': []
+    }
+    
+    # Check for package.json (Node.js/React/Vue/Angular)
+    if os.path.exists('package.json'):
+        with open('package.json', 'r') as f:
+            package_data = json.load(f)
+            dependencies = package_data.get('dependencies', {})
+            dev_dependencies = package_data.get('devDependencies', {})
+            all_deps = {**dependencies, **dev_dependencies}
+            
+            # Frontend frameworks
+            if 'react' in all_deps:
+                tech_stack['frontend'].append('React')
+            if 'vue' in all_deps:
+                tech_stack['frontend'].append('Vue')
+            if 'angular' in all_deps:
+                tech_stack['frontend'].append('Angular')
+            if 'next' in all_deps:
+                tech_stack['frontend'].append('Next.js')
+            if 'nuxt' in all_deps:
+                tech_stack['frontend'].append('Nuxt.js')
+            
+            # UI libraries
+            if 'tailwindcss' in all_deps:
+                tech_stack['frontend'].append('Tailwind CSS')
+            if '@mui/material' in all_deps:
+                tech_stack['frontend'].append('Material-UI')
+            if '@chakra-ui/react' in all_deps:
+                tech_stack['frontend'].append('Chakra UI')
+            if 'antd' in all_deps:
+                tech_stack['frontend'].append('Ant Design')
+            
+            # State management
+            if 'redux' in all_deps:
+                tech_stack['frontend'].append('Redux')
+            if 'zustand' in all_deps:
+                tech_stack['frontend'].append('Zustand')
+            if '@tanstack/react-query' in all_deps:
+                tech_stack['frontend'].append('TanStack Query')
+            
+            # Backend frameworks
+            if 'express' in all_deps:
+                tech_stack['backend'].append('Express')
+            if 'fastify' in all_deps:
+                tech_stack['backend'].append('Fastify')
+            if 'koa' in all_deps:
+                tech_stack['backend'].append('Koa')
+            if 'nest' in all_deps:
+                tech_stack['backend'].append('NestJS')
+            
+            # TypeScript
+            if 'typescript' in all_deps:
+                tech_stack['tools'].append('TypeScript')
+    
+    # Check for Python files and requirements
+    if any(Path('.').glob('*.py')):
+        tech_stack['backend'].append('Python')
+    
+    if os.path.exists('requirements.txt'):
+        with open('requirements.txt', 'r') as f:
+            requirements = f.read().lower()
+            if 'django' in requirements:
+                tech_stack['backend'].append('Django')
+            if 'flask' in requirements:
+                tech_stack['backend'].append('Flask')
+            if 'fastapi' in requirements:
+                tech_stack['backend'].append('FastAPI')
+            if 'celery' in requirements:
+                tech_stack['backend'].append('Celery')
+    
+    # Check for pyproject.toml
+    if os.path.exists('pyproject.toml'):
+        tech_stack['backend'].append('Python')
+    
+    # Check for Go files
+    if any(Path('.').glob('*.go')):
+        tech_stack['backend'].append('Go')
+    
+    # Check for Rust files
+    if any(Path('.').glob('*.rs')) or os.path.exists('Cargo.toml'):
+        tech_stack['backend'].append('Rust')
+    
+    # Check for database files
+    if os.path.exists('supabase'):
+        tech_stack['database'].append('Supabase')
+    if os.path.exists('prisma'):
+        tech_stack['database'].append('Prisma')
+    if os.path.exists('migrations'):
+        tech_stack['database'].append('Database Migrations')
+    if any(Path('.').glob('*.sql')):
+        tech_stack['database'].append('SQL')
+    
+    # Check for specific database files
+    if os.path.exists('docker-compose.yml'):
+        with open('docker-compose.yml', 'r') as f:
+            content = f.read().lower()
+            if 'postgres' in content:
+                tech_stack['database'].append('PostgreSQL')
+            if 'mysql' in content:
+                tech_stack['database'].append('MySQL')
+            if 'mongodb' in content:
+                tech_stack['database'].append('MongoDB')
+            if 'redis' in content:
+                tech_stack['database'].append('Redis')
+    
+    # Check for build tools
+    if os.path.exists('vite.config.js') or os.path.exists('vite.config.ts'):
+        tech_stack['tools'].append('Vite')
+    if os.path.exists('webpack.config.js'):
+        tech_stack['tools'].append('Webpack')
+    if os.path.exists('rollup.config.js'):
+        tech_stack['tools'].append('Rollup')
+    
+    # Check for testing frameworks
+    if os.path.exists('jest.config.js') or 'jest' in tech_stack.get('tools', []):
+        tech_stack['tools'].append('Jest')
+    if os.path.exists('cypress.config.js'):
+        tech_stack['tools'].append('Cypress')
+    if os.path.exists('playwright.config.js'):
+        tech_stack['tools'].append('Playwright')
+    
+    return tech_stack
+
+def suggest_ai_docs(tech_stack):
+    """Suggest ai_docs to create based on tech stack."""
+    suggestions = []
+    
+    # Frontend suggestions
+    for frontend in tech_stack['frontend']:
+        if frontend == 'React':
+            suggestions.extend([
+                'react-typescript-conventions.md',
+                'react-hooks-patterns.md',
+                'react-component-patterns.md'
+            ])
+        elif frontend == 'Vue':
+            suggestions.extend([
+                'vue-composition-patterns.md',
+                'vue-options-patterns.md'
+            ])
+        elif frontend == 'Angular':
+            suggestions.extend([
+                'angular-patterns.md',
+                'angular-services-patterns.md'
+            ])
+        elif frontend == 'Next.js':
+            suggestions.extend([
+                'nextjs-patterns.md',
+                'nextjs-routing-patterns.md'
+            ])
+        elif frontend == 'Tailwind CSS':
+            suggestions.append('tailwind-patterns.md')
+        elif frontend == 'Material-UI':
+            suggestions.append('mui-patterns.md')
+        elif frontend == 'Redux':
+            suggestions.append('redux-patterns.md')
+        elif frontend == 'Zustand':
+            suggestions.append('zustand-patterns.md')
+        elif frontend == 'TanStack Query':
+            suggestions.append('react-query-patterns.md')
+    
+    # Backend suggestions
+    for backend in tech_stack['backend']:
+        if backend == 'Express':
+            suggestions.extend([
+                'express-patterns.md',
+                'nodejs-patterns.md',
+                'express-middleware-patterns.md'
+            ])
+        elif backend == 'NestJS':
+            suggestions.extend([
+                'nestjs-patterns.md',
+                'nestjs-module-patterns.md'
+            ])
+        elif backend == 'Django':
+            suggestions.extend([
+                'django-patterns.md',
+                'django-models-patterns.md',
+                'django-views-patterns.md'
+            ])
+        elif backend == 'Flask':
+            suggestions.extend([
+                'flask-patterns.md',
+                'flask-blueprint-patterns.md'
+            ])
+        elif backend == 'FastAPI':
+            suggestions.extend([
+                'fastapi-patterns.md',
+                'fastapi-dependency-patterns.md'
+            ])
+        elif backend == 'Go':
+            suggestions.extend([
+                'go-patterns.md',
+                'go-http-patterns.md'
+            ])
+        elif backend == 'Rust':
+            suggestions.extend([
+                'rust-patterns.md',
+                'rust-web-patterns.md'
+            ])
+    
+    # Database suggestions
+    for database in tech_stack['database']:
+        if database == 'Supabase':
+            suggestions.extend([
+                'supabase-patterns.md',
+                'supabase-auth-patterns.md',
+                'supabase-realtime-patterns.md'
+            ])
+        elif database == 'Prisma':
+            suggestions.extend([
+                'prisma-patterns.md',
+                'prisma-migration-patterns.md'
+            ])
+        elif database == 'PostgreSQL':
+            suggestions.append('postgresql-patterns.md')
+        elif database == 'MongoDB':
+            suggestions.append('mongodb-patterns.md')
+        elif database == 'Redis':
+            suggestions.append('redis-patterns.md')
+    
+    # Tool suggestions
+    for tool in tech_stack['tools']:
+        if tool == 'TypeScript':
+            suggestions.append('typescript-patterns.md')
+        elif tool == 'Vite':
+            suggestions.append('vite-patterns.md')
+        elif tool == 'Jest':
+            suggestions.append('jest-testing-patterns.md')
+        elif tool == 'Cypress':
+            suggestions.append('cypress-testing-patterns.md')
+    
+    # Remove duplicates and return
+    return list(set(suggestions))
+
+def create_ai_docs_files(suggestions):
+    """Create the suggested ai_docs files with basic templates."""
+    created_files = []
+    
+    for suggestion in suggestions:
+        file_path = f"PRPs/ai_docs/{suggestion}"
+        if not os.path.exists(file_path):
+            # Create basic template based on file name
+            template = create_basic_template(suggestion)
+            
+            with open(file_path, 'w') as f:
+                f.write(template)
+            
+            created_files.append(file_path)
+    
+    return created_files
+
+def create_basic_template(filename):
+    """Create a basic template for ai_docs files."""
+    name = filename.replace('.md', '').replace('-', ' ').title()
+    
+    return f"""# {name}
+
+## Overview
+
+Brief description of the patterns covered in this document.
+
+## Core Patterns
+
+### Pattern 1: [Pattern Name]
+```typescript
+// Code example
+```
+
+### Pattern 2: [Pattern Name]
+```typescript
+// Code example
+```
+
+## Best Practices
+- [ ] Practice 1
+- [ ] Practice 2
+
+## Common Pitfalls
+- [ ] Pitfall 1 and how to avoid it
+- [ ] Pitfall 2 and how to avoid it
+
+## Related Patterns
+- Link to related ai_docs files
+- Cross-reference with other patterns
+
+## Examples
+- Real-world examples from your codebase
+- Common use cases and implementations
+"""
+
+def main():
+    print("🔍 Detecting technology stack...")
+    tech_stack = detect_tech_stack()
+    
+    print("\n📋 Detected Technology Stack:")
+    for category, technologies in tech_stack.items():
+        if technologies:
+            print(f"  {category.title()}: {', '.join(technologies)}")
+    
+    suggestions = suggest_ai_docs(tech_stack)
+    
+    print(f"\n📝 Suggested ai_docs to create:")
+    for suggestion in suggestions:
+        print(f"  - PRPs/ai_docs/{suggestion}")
+    
+    if suggestions:
+        print(f"\n💡 Would you like to create these ai_docs files? (y/n): ", end="")
+        response = input().lower().strip()
+        
+        if response in ['y', 'yes']:
+            created_files = create_ai_docs_files(suggestions)
+            print(f"\n✅ Created {len(created_files)} ai_docs files:")
+            for file_path in created_files:
+                print(f"  - {file_path}")
+            
+            print(f"\n📝 Next steps:")
+            print(f"  1. Edit the created ai_docs files with your project's patterns")
+            print(f"  2. Create your first PRP: cp PRPs/templates/prp_base.md PRPs/my-feature.md")
+            print(f"  3. Reference the ai_docs in your PRP")
+        else:
+            print(f"\n💡 Run this command to create the suggested ai_docs:")
+            print(f"  touch {' '.join([f'PRPs/ai_docs/{s}' for s in suggestions])}")
+    else:
+        print(f"\n💡 No specific ai_docs suggestions. Consider creating:")
+        print(f"  - PRPs/ai_docs/general-patterns.md")
+        print(f"  - PRPs/ai_docs/project-conventions.md")
+
+if __name__ == "__main__":
+    main()

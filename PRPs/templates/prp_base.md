@@ -1,1 +1,75 @@
-# [Feature Name] - Product Requirement Promptnn## OverviewnBrief description of the feature or component to be developed.nn## Requirementsnn### Functional Requirementsn- [ ] Requirement 1n- [ ] Requirement 2nn### Non-Functional Requirementsn- Performance: [specifications]n- Security: [requirements]n- Accessibility: [standards]nn## Technical Specificationsnn### Technology Stackn- Frontend: [React/Vue/Angular/etc.]n- Backend: [Node.js/Python/Go/etc.]n- Database: [PostgreSQL/MongoDB/etc.]n- UI Library: [Tailwind/Material-UI/etc.]nn### Architecture Patternsn- State Management: [Redux/Zustand/Context/etc.]n- API Patterns: [REST/GraphQL/etc.]n- Database Patterns: [ORM/Query Builder/etc.]nn## All Needed Contextnn### AI Documentation (Recommended)n- **file**: PRPs/ai_docs/[relevant-pattern].mdn  **why**: [why this pattern is relevant]nn### Project Filesn- **file**: [path to relevant file]n  **why**: [why this file is important for context]nn### External Documentationn- **url**: [external documentation URL]n  **why**: [why this documentation is needed]nn## Implementation Notesnn### Critical Requirementsn- [ ] CRITICAL: [critical requirement]n- [ ] IMPORTANT: [important requirement]n- [ ] NOTE: [general note]nn### Implementation Stepsn1. [Step 1]n2. [Step 2]n3. [Step 3]nn## Expected Outputnn### Code Quality Standardsn- [ ] Follows project TypeScript conventionsn- [ ] Implements proper error handlingn- [ ] Includes comprehensive testingn- [ ] Follows accessibility guidelinesnn### Deliverablesn- [ ] Component/function implementationn- [ ] Unit testsn- [ ] Integration testsn- [ ] Documentation updatesnn## Success Criterian- [ ] Feature works as specifiedn- [ ] Code follows project patternsn- [ ] Tests pass with 80%+ coveragen- [ ] Performance meets requirementsn- [ ] Accessibility standards met
+# [Feature Name] - Product Requirement Prompt
+
+## Overview
+Brief description of the feature or component to be developed.
+
+## Requirements
+
+### Functional Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+
+### Non-Functional Requirements
+- Performance: [specifications]
+- Security: [requirements]
+- Accessibility: [standards]
+
+## Technical Specifications
+
+### Technology Stack
+- Frontend: [React/Vue/Angular/etc.]
+- Backend: [Node.js/Python/Go/etc.]
+- Database: [PostgreSQL/MongoDB/etc.]
+- UI Library: [Tailwind/Material-UI/etc.]
+
+### Architecture Patterns
+- State Management: [Redux/Zustand/Context/etc.]
+- API Patterns: [REST/GraphQL/etc.]
+- Database Patterns: [ORM/Query Builder/etc.]
+
+## All Needed Context
+
+### AI Documentation (Recommended)
+- **file**: PRPs/ai_docs/[relevant-pattern].md
+  **why**: [why this pattern is relevant]
+
+### Project Files
+- **file**: [path to relevant file]
+  **why**: [why this file is important for context]
+
+### External Documentation
+- **url**: [external documentation URL]
+  **why**: [why this documentation is needed]
+
+## Implementation Notes
+
+### Critical Requirements
+- [ ] CRITICAL: [critical requirement]
+- [ ] IMPORTANT: [important requirement]
+- [ ] NOTE: [general note]
+
+### Implementation Steps
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Expected Output
+
+### Code Quality Standards
+- [ ] Follows project TypeScript conventions
+- [ ] Implements proper error handling
+- [ ] Includes comprehensive testing
+- [ ] Follows accessibility guidelines
+
+### Deliverables
+- [ ] Component/function implementation
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Documentation updates
+
+## Success Criteria
+- [ ] Feature works as specified
+- [ ] Code follows project patterns
+- [ ] Tests pass with 80%+ coverage
+- [ ] Performance meets requirements
+- [ ] Accessibility standards met
