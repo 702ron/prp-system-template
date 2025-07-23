@@ -1,448 +1,208 @@
 # PRP System Template
 
-A comprehensive PRP (Product Requirement Prompt) system template for AI-assisted development. This template provides everything you need to set up AI-assisted development with consistent, production-ready code generation across all your projects.
+An AI-assisted development framework that combines Product Requirement Prompts (PRPs) with comprehensive Claude slash commands for structured, efficient development workflows.
 
-## 🚀 Quick Start (5 Minutes)
+## 🚀 Quick Start
 
-### 0. Setup Requirements
-
-#### For Complete PRP System (Recommended)
-To get the full PRP system with all features, clone the entire repository:
-
+### For New Projects
 ```bash
-# Clone the complete template repository
-git clone https://github.com/702ron/prp-system-template.git my-new-project
-cd my-new-project
+# Clone or download this template
+git clone <repository-url>
+cd prp-system-template
+
+# Set up the complete PRP system
+/setup-prp-system --detect-tech --create-example
 ```
 
-This includes:
-- ✅ **Slash Commands** (`.claude/` directory)
-- ✅ **PRP Templates** (`PRPs/templates/`)
-- ✅ **AI Documentation** (`PRPs/ai_docs/`)
-- ✅ **Python Runner Scripts** (`PRPs/run_prp.py`)
-- ✅ **Example PRPs** (`PRPs/examples/`)
-- ✅ **Setup Scripts** (`scripts/`)
-- ✅ **Documentation** (`docs/`, `CLAUDE.md`, etc.)
-
-#### For Slash Commands Only (Minimal)
-If you only want the slash commands in an existing project:
-
+### For Existing Projects
 ```bash
-# Copy just the .claude directory to your existing project
-cp -r prp-system-template/.claude /path/to/your/project/
-
-# Then run setup to add PRP system
-/setup-prp-system --full
+# Analyze and integrate with existing project
+/analyze-project --tech-stack --structure --create-prps
 ```
 
-**Note**: The `.claude` directory contains all the slash commands. Without it, the commands won't be available in Claude Code.
+## 📋 Available Commands
 
-### 1. Choose Your Starting Point
+### 🎯 Core Commands
+- **`/setup-prp-system`** - Complete system setup with tech stack detection
+- **`/new-project`** - Create new projects from scratch
+- **`/analyze-project`** - Analyze and enhance existing projects
 
-#### For New Projects
-Start from scratch with comprehensive setup:
-```bash
-# In Claude Code
-/new-project "A web application for task management with user authentication"
-```
+### 🔧 Development Commands
+- **`/review`** - Comprehensive code, build, and change reviews
+- **`/prp-create`** - Create feature requirements with language-specific templates
+- **`/git`** - Complete git operations with AI assistance
 
-#### For Existing Projects
-Enhance your existing codebase:
-```bash
-# In Claude Code
-/analyze-project "I want to add user authentication and improve the UI"
-```
+### 📋 Project Management
+- **`/create-pr`** - Create pull requests with comprehensive descriptions
+- **`/new-dev-branch`** - Create development branches with proper conventions
+- **`/debug-RCA`** - Root cause analysis for issues and bugs
+- **`/onboarding`** - Create onboarding documentation for team members
 
-#### For PRP System Only
-Add PRP system to any project:
-```bash
-# Option 1: Run the automated setup script
-./scripts/setup-prp-system.sh
+## 🔄 Command Consolidation
 
-# Option 2: Use Claude slash command (in Claude Code)
-/setup-prp-system
-/setup-prp-system --tech-stack  # With tech stack detection
-/setup-prp-system --full        # Complete setup with examples
-```
+The system has been streamlined with consolidated commands for better usability:
 
-### 2. Detect Your Tech Stack (Optional)
-```bash
-# Automatically detect your project's technology stack and create appropriate ai_docs
-python scripts/detect-tech-stack.py
-```
+### Review Commands → `/review`
+- `review-build` → `/review build`
+- `review-code` → `/review code` 
+- `review-changes` → `/review changes`
+- `review-typescript` → `/review typescript`
 
-### 3. Create Your First PRP
-```bash
-# Create a new PRP for your feature
-cp PRPs/templates/prp_base.md PRPs/my-feature.md
+### PRP Commands → `/prp-create`
+- `prp-base-create` → `/prp-create` (with automatic language detection)
+- `prp-typescript-create` → `/prp-create --language ts`
 
-# Edit the PRP with your requirements
-# Then run with AI
-python PRPs/run_prp.py PRPs/my-feature.md
-```
+### Git Commands → `/git`
+- `smart-commit` → `/git commit`
+- Various git operations → `/git [operation]`
 
-### 4. Use Claude Slash Commands (Optional)
-```bash
-# In Claude Code, type "/" to see available commands
-/prp-base-create implement user authentication
-/prp-base-execute PRPs/my-feature.md
-/review-general src/
-```
-
-## 🎯 Three Ways to Use This Template
-
-### 1. **New Project** (Recommended for new development)
-```bash
-# Clone the complete template and start fresh
-git clone https://github.com/702ron/prp-system-template.git my-new-project
-cd my-new-project
-
-# Use the new project command
-/new-project "A React application for e-commerce with payment processing"
-```
-
-### 2. **Existing Project** (Add complete PRP system to current project)
-```bash
-# Option A: Copy everything to your existing project
-cp -r prp-system-template/* /path/to/your/project/
-
-# Option B: Copy just .claude and let setup create the rest
-cp -r prp-system-template/.claude /path/to/your/project/
-/analyze-project "I want to add real-time notifications and improve performance"
-```
-
-### 3. **Slash Commands Only** (Minimal setup)
-```bash
-# Copy just the .claude directory to your existing project
-cp -r prp-system-template/.claude /path/to/your/project/
-
-# Then run setup to add PRP system infrastructure
-/setup-prp-system --full
-```
-
-## 📋 What's Included
-
-### Complete PRP System Components
-
-#### Core PRP System
-- **PRP Templates** (`PRPs/templates/`): Structured prompts for AI-assisted development
-- **Python Runner** (`PRPs/run_prp.py`): Script to execute PRPs with AI
-- **Validation**: Built-in PRP structure validation
-- **Examples** (`PRPs/examples/`): Sample PRPs demonstrating best practices
-
-#### AI Documentation Framework (`PRPs/ai_docs/`)
-- **Technology Patterns**: Pre-built patterns for React, TypeScript, Supabase, etc.
-- **Convention Guides**: Coding standards and best practices
-- **Integration Patterns**: Database, API, and workflow patterns
-- **Extensible**: Easy to add new patterns for your tech stack
-
-#### Claude Slash Commands (`.claude/commands/`)
-- **15+ Commands**: Complete AI-assisted development workflow
-- **Project Management**: `/new-project`, `/analyze-project`, `/setup-prp-system`
-- **PRP Workflow**: `/prp-base-create`, `/prp-base-execute`, etc.
-- **Quality Assurance**: `/review-general`, `/refactor-simple`, etc.
-
-#### Automation Scripts (`scripts/`)
-- **Setup Script**: One-command PRP system installation
-- **Tech Stack Detection**: Automatic detection of project technologies
-- **Template Validation**: Ensures proper setup and structure
-
-#### Documentation
-- **Setup Guides**: Step-by-step installation instructions
-- **Usage Examples**: Real-world PRP examples
-- **Best Practices**: Guidelines for effective AI-assisted development
-- **Troubleshooting**: Common issues and solutions
-
-### Automation Scripts
-- **Setup Script**: One-command PRP system installation
-- **Tech Stack Detection**: Automatic detection of project technologies
-- **Template Validation**: Ensures proper setup and structure
-
-### Comprehensive Documentation
-- **Setup Guides**: Step-by-step installation instructions
-- **Usage Examples**: Real-world PRP examples
-- **Best Practices**: Guidelines for effective AI-assisted development
-- **Troubleshooting**: Common issues and solutions
-
-## 🏗️ Project Structure
+## 📁 Project Structure
 
 ```
 prp-system-template/
-├── .claude/                # Claude Code commands
-│   └── commands/           # 12+ slash commands for AI development
-├── PRPs/                   # PRP system core
-│   ├── templates/          # PRP templates
-│   │   ├── prp_base.md    # Base PRP template
-│   │   ├── prp_base_typescript.md
-│   │   ├── prp_planning.md
-│   │   ├── prp_spec.md
-│   │   └── prp_task.md
-│   ├── ai_docs/           # AI documentation framework
-│   │   ├── README.md      # AI docs guide
-│   │   ├── react-typescript-conventions.md
-│   │   ├── supabase-patterns.md
-│   │   └── [20+ additional patterns]
-│   ├── examples/          # Example PRPs
-│   ├── scripts/           # PRP runner scripts
-│   ├── run_prp.py        # Python runner script
-│   └── README.md         # PRP system guide
-├── scripts/               # Automation scripts
-│   ├── setup-prp-system.sh # Setup automation
-│   ├── detect-tech-stack.py # Tech stack detection
-│   └── setup-guide.md    # Detailed setup guide
-├── docs/                  # Documentation
-├── CLAUDE.md             # Project guidelines
-├── CLAUDE_COMMANDS_GUIDE.md # Slash commands guide
-└── README.md             # This file
+├── .claude/                    # Claude commands and configuration
+│   ├── commands/              # Slash command definitions
+│   └── ai_docs/              # AI documentation patterns
+├── PRPs/                      # Product Requirement Prompts
+│   ├── templates/            # PRP templates
+│   ├── examples/             # Example PRPs
+│   └── ai_docs/             # AI documentation
+├── scripts/                   # Setup and utility scripts
+├── docs/                      # Documentation
+└── README.md                 # This file
 ```
 
-## 🎯 Features
+## 🛠️ Setup Instructions
+
+### 1. Basic Setup
+The `.claude` directory containing slash commands must be set up for full functionality:
+
+**Option A: Clone the entire repo**
+```bash
+git clone <repository-url>
+cd prp-system-template
+```
+
+**Option B: Copy the .claude directory**
+```bash
+# Copy the .claude directory to your project root
+cp -r prp-system-template/.claude ./
+```
+
+### 2. Complete PRP System Setup
+For the full PRP system (AI docs, templates, examples, etc.):
+
+```bash
+# Run the setup command
+/setup-prp-system --detect-tech --create-example
+```
+
+### 3. Usage Scenarios
+
+#### New Project Development
+```bash
+/new-project --name my-app --type web --tech react-typescript
+```
+
+#### Existing Project Enhancement
+```bash
+/analyze-project --tech-stack --structure --create-prps
+```
+
+#### Slash Commands Only
+If you only need the slash commands without the full PRP system:
+- Copy the `.claude` directory to your project
+- Commands will work with basic functionality
+
+## 📚 Usage Examples
+
+### Feature Development Workflow
+```bash
+# 1. Create feature requirement
+/prp-create implement user authentication --language ts --framework react
+
+# 2. Create development branch
+/new-dev-branch --type feature --name user-auth
+
+# 3. Review implementation
+/review code src/auth/
+
+# 4. Commit changes
+/git commit --message "Add user authentication"
+
+# 5. Create pull request
+/create-pr --title "Add user authentication" --reviewers "team"
+```
+
+### Code Review Process
+```bash
+# Comprehensive review
+/review build performance
+/review code src/
+/review changes
+```
+
+### Issue Resolution
+```bash
+# Debug and fix issues
+/debug-RCA --issue "User login fails"
+/git branch create bugfix/login-issue
+# ... implement fix ...
+/review code
+/git commit
+```
+
+## 🎯 Key Features
 
 ### AI-Assisted Development
-- **Structured Prompts**: Consistent PRP format for reliable AI output
-- **Context-Aware**: ai_docs provide deep project context to AI
-- **Pattern-Driven**: Follow established patterns for consistent code
-- **Quality Assurance**: Built-in validation and best practices
-- **Claude Integration**: 12+ slash commands for seamless AI development
+- **Smart Code Generation**: Language-specific templates and patterns
+- **Intelligent Reviews**: Comprehensive analysis with actionable recommendations
+- **Context-Aware Commits**: AI-generated commit messages based on changes
+- **Conflict Resolution**: AI-assisted merge conflict resolution
 
-### Technology Agnostic
-- **Multi-Stack Support**: Works with React, Vue, Angular, Node.js, Python, etc.
-- **Automatic Detection**: Detects your tech stack and suggests appropriate ai_docs
-- **Extensible**: Easy to add support for new technologies
+### Structured Workflows
+- **PRP System**: Product Requirement Prompts for systematic feature development
+- **Quality Gates**: Automated code review and quality checks
+- **Documentation**: AI-generated documentation and onboarding guides
+- **Team Collaboration**: Pull request creation and review workflows
 
-### Team Collaboration
-- **Shared Patterns**: Consistent patterns across team members
-- **Documentation**: Comprehensive guides for onboarding
-- **Version Control**: Track pattern evolution with your codebase
+### Technology Support
+- **Multiple Languages**: JavaScript, TypeScript, Python, Go, Rust, PHP, Java
+- **Framework Integration**: React, Vue, Angular, Next.js, Express, Django, FastAPI
+- **Development Tools**: Git integration, CI/CD support, testing frameworks
 
-## 🛠️ Supported Technologies
+## 📖 Documentation
 
-### Frontend
-- React (with TypeScript)
-- Vue.js
-- Angular
-- Next.js
-- Tailwind CSS
-- Material-UI
-- Chakra UI
+- **[Claude Commands Guide](CLAUDE_COMMANDS_GUIDE.md)** - Complete command reference
+- **[Project Template Guide](docs/PROJECT_TEMPLATE_GUIDE.md)** - Project setup and structure
+- **[Systematic Setup Guide](docs/SYSTEMATIC_SETUP_GUIDE.md)** - Step-by-step setup instructions
+- **[CLAUDE.md](docs/CLAUDE.md)** - AI development guidelines
 
-### Backend
-- Node.js/Express
-- Python/Django
-- Python/FastAPI
-- Go
-- Rust
-
-### Databases
-- Supabase
-- PostgreSQL
-- MongoDB
-- Prisma
-- Redis
-
-### Tools
-- TypeScript
-- Vite
-- Webpack
-- Jest
-- Cypress
-- Playwright
-
-## 📖 Usage Examples
-
-### Creating a New PRP
-```bash
-# Copy the base template
-cp PRPs/templates/prp_base.md PRPs/user-authentication.md
-
-# Edit with your requirements
-nano PRPs/user-authentication.md
-
-# Run with AI
-python PRPs/run_prp.py PRPs/user-authentication.md
-```
-
-### Using ai_docs in PRPs
-```markdown
-## All Needed Context
-
-### AI Documentation (Recommended)
-- **file**: PRPs/ai_docs/react-typescript-conventions.md
-  **why**: Component structure and TypeScript patterns
-- **file**: PRPs/ai_docs/supabase-patterns.md
-  **why**: Database operations and authentication patterns
-```
-
-### Tech Stack Detection
-```bash
-# Detect your project's tech stack
-python scripts/detect-tech-stack.py
-
-# Output example:
-# 📋 Detected Technology Stack:
-#   Frontend: React, Tailwind CSS, TypeScript
-#   Database: Supabase
-#   Tools: Vite
-# 
-# 📝 Suggested ai_docs to create:
-#   - PRPs/ai_docs/react-typescript-conventions.md
-#   - PRPs/ai_docs/tailwind-patterns.md
-#   - PRPs/ai_docs/supabase-patterns.md
-```
-
-## 🔧 Customization
-
-## 🛠️ Troubleshooting
-
-### Slash Commands Not Appearing
-If you don't see the slash commands in Claude Code:
-
-1. **Check .claude directory exists**:
-   ```bash
-   ls -la .claude/commands/
-   ```
-
-2. **Verify command files are present**:
-   ```bash
-   ls .claude/commands/development/
-   # Should show: analyze-project.md, new-project.md, setup-prp-system.md, etc.
-   ```
-
-3. **Restart Claude Code**: Sometimes Claude Code needs to be restarted to detect new commands
-
-4. **Check file permissions**:
-   ```bash
-   chmod -R 644 .claude/commands/
-   ```
-
-### PRP System Not Working
-If slash commands work but PRP system features don't:
-
-1. **Check if you have the complete system**:
-   ```bash
-   ls -la PRPs/
-   # Should show: templates/, ai_docs/, examples/, run_prp.py
-   ```
-
-2. **If missing components, run setup**:
-   ```bash
-   /setup-prp-system --full
-   ```
-
-3. **Or copy the complete repository**:
-   ```bash
-   cp -r prp-system-template/* /path/to/your/project/
-   ```
+## 🔧 Troubleshooting
 
 ### Common Issues
+1. **Commands not found**: Ensure `.claude` directory is in your project root
+2. **Missing functionality**: Run `/setup-prp-system` for complete PRP system
+3. **Permission errors**: Check file permissions and git configuration
 
-**"Command not found" errors**:
-- Ensure you're in the correct project directory
-- Verify the `.claude` directory is in your project root
-- Check that command files have `.md` extensions
-
-**Permission errors**:
-- Make sure you have read permissions on the `.claude` directory
-- Try copying the directory again if permissions are corrupted
-
-**Commands not updating**:
-- Clear Claude Code cache
-- Restart the Claude Code application
-- Verify you're using the latest version of the template
-
-### Adding New Technologies
-1. Update `scripts/detect-tech-stack.py` to detect your technology
-2. Create corresponding ai_docs files
-3. Update documentation with new patterns
-
-### Modifying Patterns
-1. Edit ai_docs files with your project's specific patterns
-2. Update PRP templates if needed
-3. Test with sample PRPs
-
-### Creating Project Templates
-1. Copy this template to your own repository
-2. Customize ai_docs for your preferred tech stack
-3. Enable GitHub template option
-4. Share with your team
-
-## 📚 Documentation
-
-- **[PRP System Guide](PRPs/README.md)** - Main PRP system documentation
-- **[AI Documentation Guide](PRPs/ai_docs/README.md)** - Using ai_docs effectively
-- **[Claude Commands Guide](CLAUDE_COMMANDS_GUIDE.md)** - Complete slash commands reference
-- **[Systematic Setup Guide](docs/SYSTEMATIC_SETUP_GUIDE.md)** - Complete setup process
-- **[Project Template Guide](docs/PROJECT_TEMPLATE_GUIDE.md)** - Creating reusable templates
-- **[Development Guidelines](CLAUDE.md)** - Best practices and conventions
-
-## 🚀 Getting Started
-
-### For New Projects
-1. **Use this template**: Click "Use this template" on GitHub
-2. **Set up PRP system**: Run `./scripts/setup-prp-system.sh`
-3. **Detect tech stack**: Run `python scripts/detect-tech-stack.py`
-4. **Create first PRP**: Copy template and start developing
-
-### For Existing Projects
-1. **Copy PRP system**: Copy `PRPs/` and `scripts/` directories
-2. **Run setup**: Execute `./scripts/setup-prp-system.sh`
-3. **Detect stack**: Run `python scripts/detect-tech-stack.py`
-4. **Customize**: Edit ai_docs with your project's patterns
+### Getting Help
+- Use `/prime-core` to refresh AI context
+- Check command documentation with `--help` flags
+- Review generated reports for detailed information
 
 ## 🤝 Contributing
 
-1. Fork this template
-2. Create a feature branch
-3. Make your improvements
-4. Test with sample projects
-5. Submit a pull request
+This template is designed to be easily customizable and extensible:
 
-## 📈 Success Metrics
-
-Track these metrics to measure PRP system effectiveness:
-
-- **Code Quality**: Reduced bugs, improved consistency
-- **Development Speed**: Faster feature delivery
-- **Team Productivity**: Reduced onboarding time
-- **Documentation Quality**: Better pattern coverage
-- **AI Output Quality**: Higher success rate of generated code
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **AI generates inconsistent code**
-   - Review ai_docs for completeness
-   - Update patterns to match actual codebase
-   - Be more specific in PRP requirements
-
-2. **PRPs take too long to create**
-   - Use templates and examples
-   - Reuse patterns from existing ai_docs
-   - Start with simple PRPs and iterate
-
-3. **Setup script fails**
-   - Check file permissions
-   - Verify Python installation
-   - Ensure proper directory structure
-
-### Getting Help
-
-- Review existing ai_docs for patterns
-- Check PRP examples for similar features
-- Update documentation with new patterns
-- Share successful PRPs with the team
+1. **Custom Commands**: Add new commands in `.claude/commands/`
+2. **Templates**: Modify PRP templates in `PRPs/templates/`
+3. **AI Documentation**: Update patterns in `PRPs/ai_docs/`
+4. **Scripts**: Enhance setup scripts in `scripts/`
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- Inspired by the PRPs-agentic-eng repository
-- Built for consistent AI-assisted development
-- Designed for team collaboration and code quality
-
 ---
 
-**Ready to supercharge your development with AI?** Start with this template and experience the power of structured, pattern-driven AI-assisted development! 🚀
+**Ready to supercharge your development?** Start with `/setup-prp-system` to experience the full power of AI-assisted development! 🚀

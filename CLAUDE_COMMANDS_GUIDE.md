@@ -1,447 +1,297 @@
-# Claude Slash Commands Guide
+# Claude Commands Guide
 
-## Overview
+This guide provides comprehensive documentation for all slash commands available in the PRP System Template.
 
-This PRP system template now includes comprehensive Claude slash commands from the [PRPs-agentic-eng repository](https://github.com/Wirasm/PRPs-agentic-eng.git). These commands provide powerful AI-assisted development workflows that integrate seamlessly with Claude Code.
+## 🚀 Quick Start Commands
 
-## Available Commands
+### `/setup-prp-system`
+Sets up the complete PRP system in your project.
 
-### 🎯 Project Management
-#### `/new-project`
-Creates a new project from scratch with comprehensive setup.
+**Options:**
+- `--detect-tech` - Automatically detect and configure for your tech stack
+- `--create-example` - Create an example PRP for demonstration
+
+**Example:**
+```
+/setup-prp-system --detect-tech --create-example
+```
+
+### `/new-project`
+Creates a new project from scratch with full PRP system integration.
+
+**Options:**
+- `--name <project-name>` - Project name
+- `--type <project-type>` - Project type (web, api, mobile, desktop)
+- `--tech <tech-stack>` - Technology stack
+- `--template <template>` - Project template
+
+**Example:**
+```
+/new-project --name my-app --type web --tech react-typescript --template modern
+```
+
+### `/analyze-project`
+Analyzes existing projects and integrates PRP system.
+
+**Options:**
+- `--tech-stack` - Detect and document tech stack
+- `--structure` - Analyze project structure
+- `--dependencies` - Analyze dependencies
+- `--create-prps` - Create initial PRPs based on analysis
+
+**Example:**
+```
+/analyze-project --tech-stack --structure --create-prps
+```
+
+## 🔧 Development Commands
+
+### `/review`
+Comprehensive review command that analyzes code, builds, and changes with different scopes.
 
 **Usage:**
 ```
-/new-project "A web application for task management with user authentication"
+/review [scope] [focus-area]
 ```
 
-**Features:**
-- Creates `claude.md` with project guidelines
-- Creates `initial.md` with initialization details
-- Sets up PRP system for structured development
-- Creates basic project structure and documentation
-- Prompts for project description if not provided
+**Scopes:**
+- `build` - Comprehensive build analysis and enhancement recommendations
+- `code` - Code quality and structure review
+- `changes` - Review git staged/unstaged changes
+- `typescript` - TypeScript-specific review
 
-#### `/analyze-project`
-Analyzes and enhances existing projects.
+**Options:**
+- `focus-area` - Specific area to focus on (performance, security, features, etc.)
+
+**Examples:**
+```
+/review build performance
+/review code src/auth/
+/review changes
+/review typescript src/components/
+```
+
+### `/prp-create`
+Create Product Requirement Prompts (PRPs) with language-specific templates and patterns.
 
 **Usage:**
 ```
-/analyze-project "I want to add user authentication and improve the UI"
+/prp-create [feature] [options]
 ```
 
-**Features:**
-- Scans existing project structure
-- Creates or updates `claude.md` for enhancement
-- Sets up PRP system for existing projects
-- Preserves existing functionality
-- Creates enhancement-focused templates
+**Options:**
+- `--language <lang>` - Programming language (js, ts, python, go, rust, php, java)
+- `--framework <framework>` - Framework (react, vue, angular, next, express, django, etc.)
+- `--template <template>` - Template type (base, auth, api, ui, testing, deployment)
+- `--output <path>` - Output path for PRP file
+- `--ai-docs` - Include AI documentation patterns
+- `--examples` - Include implementation examples
+- `--testing` - Include testing requirements
+- `--deployment` - Include deployment considerations
 
-### 🚀 PRP Creation & Execution
+**Examples:**
+```
+/prp-create implement user authentication --language ts --framework react
+/prp-create add API endpoints --language python --framework fastapi --ai-docs
+/prp-create implement database models --template api
+```
 
-#### `/prp-base-create`
-Creates comprehensive PRPs with research and context gathering.
+### `/git`
+Comprehensive git operations command that handles commits, branches, conflicts, and repository management.
 
 **Usage:**
 ```
-/prp-base-create implement user authentication with JWT tokens
+/git [operation] [options]
 ```
 
-**Features:**
-- Generates complete PRP structure
-- Includes research and context gathering
-- Provides implementation blueprint
-- Sets up validation loops
+**Operations:**
+- `commit` - Commit staged changes with smart message generation
+- `branch` - Create, switch, or manage branches
+- `conflict` - Resolve merge conflicts with AI assistance
+- `sync` - Sync with remote repository (pull/push)
+- `status` - Show repository status and changes
+- `history` - Show commit history and analysis
+- `cleanup` - Clean up repository (stash, reset, etc.)
 
-#### `/prp-base-execute`
-Executes PRPs against your codebase with full context.
+**Options:**
+- `--message <msg>` - Custom commit message
+- `--branch <name>` - Branch name for branch operations
+- `--remote <name>` - Remote name (default: origin)
+- `--force` - Force operations when needed
+- `--interactive` - Interactive mode for complex operations
+- `--dry-run` - Show what would be done without executing
 
-**Usage:**
+**Examples:**
 ```
-/prp-base-execute PRPs/my-feature.md
-```
-
-**Features:**
-- Runs PRPs with full project context
-- Integrates with ai_docs
-- Provides real-time feedback
-- Generates production-ready code
-
-#### `/prp-planning-create`
-Creates planning documents with diagrams and architecture.
-
-**Usage:**
-```
-/prp-planning-create design a microservices architecture
-```
-
-**Features:**
-- Generates architectural diagrams
-- Creates implementation plans
-- Includes timeline estimates
-- Provides resource requirements
-
-#### `/prp-spec-create`
-Creates detailed technical specifications.
-
-**Usage:**
-```
-/prp-spec-create API specification for user management
+/git commit --message "Add user authentication feature"
+/git branch create feature/user-auth
+/git conflict resolve
+/git sync pull
+/git status
+/git history --count 10
+/git cleanup stash
 ```
 
-**Features:**
-- Generates API contracts
-- Creates database schemas
-- Defines interfaces
-- Includes validation rules
+## 📋 Project Management Commands
 
-#### `/prp-spec-execute`
-Executes specifications to generate code.
+### `/create-pr`
+Creates a pull request with comprehensive description and review checklist.
 
-**Usage:**
+**Options:**
+- `--title <title>` - PR title
+- `--description <desc>` - PR description
+- `--reviewers <list>` - List of reviewers
+- `--labels <list>` - Labels to apply
+
+**Example:**
 ```
-/prp-spec-execute PRPs/api-spec.md
-```
-
-**Features:**
-- Converts specs to working code
-- Generates tests
-- Creates documentation
-- Validates implementation
-
-#### `/prp-task-create`
-Creates detailed task breakdowns from PRPs.
-
-**Usage:**
-```
-/prp-task-create PRPs/my-feature.md
+/create-pr --title "Add user authentication" --reviewers "john,alice"
 ```
 
-**Features:**
-- Breaks down PRPs into tasks
-- Estimates effort
-- Assigns priorities
-- Creates dependencies
+### `/new-dev-branch`
+Creates a new development branch with proper naming conventions.
 
-#### `/prp-task-execute`
-Executes individual tasks from task lists.
+**Options:**
+- `--type <type>` - Branch type (feature, bugfix, hotfix)
+- `--name <name>` - Branch name
+- `--base <branch>` - Base branch (default: main)
 
-**Usage:**
+**Example:**
 ```
-/prp-task-execute implement authentication middleware
-```
-
-**Features:**
-- Focuses on specific tasks
-- Provides targeted implementation
-- Includes testing
-- Validates completion
-
-#### `/api-contract-define`
-Defines API contracts and interfaces.
-
-**Usage:**
-```
-/api-contract-define user management API
+/new-dev-branch --type feature --name user-auth
 ```
 
-**Features:**
-- Generates OpenAPI specs
-- Creates TypeScript interfaces
-- Defines request/response schemas
-- Includes validation rules
+## 🔍 Analysis and Debugging Commands
 
-### 🔍 Code Review & Quality
+### `/debug-RCA`
+Performs Root Cause Analysis (RCA) for issues and bugs.
 
-#### `/review-build`
-Comprehensively reviews the current build and recommends enhancements.
+**Options:**
+- `--issue <description>` - Issue description
+- `--logs <path>` - Path to log files
+- `--context <context>` - Additional context
 
-**Usage:**
+**Example:**
 ```
-/review-build
-/review-build performance
-/review-build "user experience and security"
+/debug-RCA --issue "User login fails" --logs logs/app.log
 ```
 
-**Features:**
-- Analyzes project structure and tech stack
-- Identifies enhancement opportunities
-- Provides tool-specific recommendations
-- Creates actionable implementation plans
-- Generates comprehensive review report
+### `/onboarding`
+Creates onboarding documentation and setup guides for new team members.
 
-#### `/review-general`
-Performs comprehensive code review.
+**Options:**
+- `--role <role>` - Team member role
+- `--tech-stack` - Include tech stack documentation
+- `--processes` - Include development processes
 
-**Usage:**
+**Example:**
 ```
-/review-general src/auth/
+/onboarding --role "Frontend Developer" --tech-stack --processes
 ```
 
-**Features:**
-- Analyzes code quality
-- Identifies potential issues
-- Suggests improvements
-- Checks best practices
+### `/prime-core`
+Primes the AI with core project context and patterns.
 
-#### `/review-staged-unstaged`
-Reviews git changes for quality.
-
-**Usage:**
-```
-/review-staged-unstaged
-```
-
-**Features:**
-- Reviews staged changes
-- Analyzes unstaged modifications
-- Provides feedback
-- Suggests improvements
-
-#### `/refactor-simple`
-Performs simple refactoring tasks.
-
-**Usage:**
-```
-/refactor-simple improve error handling in auth module
-```
-
-**Features:**
-- Identifies refactoring opportunities
-- Suggests improvements
-- Maintains functionality
-- Improves code quality
-
-### 🛠️ Development Workflow
-
-#### `/prime-core`
-Primes Claude with project context.
-
-**Usage:**
+**Example:**
 ```
 /prime-core
 ```
 
-**Features:**
-- Loads project context
-- Sets up development environment
-- Configures AI assistance
-- Prepares for development
+## 🎯 Command Categories
 
-#### `/onboarding`
-Onboards new team members.
+### Setup & Initialization
+- `/setup-prp-system` - Complete system setup
+- `/new-project` - New project creation
+- `/analyze-project` - Existing project analysis
+- `/onboarding` - Team member onboarding
 
-**Usage:**
-```
-/onboarding
-```
+### Development Workflow
+- `/review` - Comprehensive code and build reviews
+- `/prp-create` - Create feature requirements
+- `/git` - Git operations and management
+- `/new-dev-branch` - Development branch creation
 
-**Features:**
-- Explains project structure
-- Sets up development environment
-- Provides coding guidelines
-- Introduces workflows
+### Project Management
+- `/create-pr` - Pull request creation
+- `/debug-RCA` - Issue analysis and debugging
+- `/prime-core` - AI context priming
 
-#### `/debug-RCA`
-Performs root cause analysis for debugging.
+## 🔄 Command Consolidation
 
-**Usage:**
-```
-/debug-RCA investigate authentication failures
-```
+The following commands have been consolidated to reduce complexity and improve usability:
 
-**Features:**
-- Analyzes error patterns
-- Identifies root causes
-- Suggests solutions
-- Provides debugging strategies
+### Review Commands → `/review`
+- `review-build` → `/review build`
+- `review-code` → `/review code`
+- `review-changes` → `/review changes`
+- `review-typescript` → `/review typescript`
 
-#### `/new-dev-branch`
-Creates new development branches.
+### PRP Commands → `/prp-create`
+- `prp-base-create` → `/prp-create` (with language detection)
+- `prp-typescript-create` → `/prp-create --language ts`
 
-**Usage:**
-```
-/new-dev-branch feature/user-auth
-```
+### Git Commands → `/git`
+- `smart-commit` → `/git commit`
+- Various git operations → `/git [operation]`
 
-**Features:**
-- Creates feature branches
-- Sets up tracking
-- Configures development environment
-- Prepares for development
+## 📚 Best Practices
 
-#### `/setup-prp-system`
-Automatically sets up the complete PRP system in your project.
+### Command Usage
+1. **Start with setup**: Use `/setup-prp-system` for new projects
+2. **Regular reviews**: Use `/review` regularly for code quality
+3. **Structured development**: Use `/prp-create` for all new features
+4. **Git workflow**: Use `/git` for all repository operations
 
-**Usage:**
-```
-/setup-prp-system
-/setup-prp-system --tech-stack
-/setup-prp-system --full
-```
+### Workflow Integration
+1. **Feature Development**:
+   ```
+   /prp-create implement new feature
+   /new-dev-branch --type feature --name new-feature
+   # ... development work ...
+   /review code src/
+   /git commit
+   /create-pr
+   ```
 
-**Features:**
-- Creates directory structure
-- Sets up PRP templates and runner scripts
-- Creates AI documentation framework
-- Optionally detects tech stack and creates ai_docs
-- Optionally creates example PRPs
+2. **Code Review Process**:
+   ```
+   /review build
+   /review code src/
+   /review changes
+   ```
 
-### 📝 Git & GitHub Operations
+3. **Issue Resolution**:
+   ```
+   /debug-RCA --issue "description"
+   /git branch create bugfix/issue-name
+   # ... fix implementation ...
+   /review code
+   /git commit
+   ```
 
-#### `/create-pr`
-Creates pull requests with comprehensive descriptions.
-
-**Usage:**
-```
-/create-pr implement user authentication
-```
-
-**Features:**
-- Generates PR descriptions
-- Includes testing information
-- Provides review guidelines
-- Sets up CI/CD integration
-
-#### `/smart-commit`
-Creates intelligent commit messages.
-
-**Usage:**
-```
-/smart-commit
-```
-
-**Features:**
-- Analyzes changes
-- Generates descriptive messages
-- Follows conventional commits
-- Includes context
-
-## How to Use Commands
-
-### 1. In Claude Code
-1. Type `/` to see available commands
-2. Select a command from the list
-3. Provide arguments when prompted
-4. Follow the generated instructions
-
-### 2. Command Structure
-Most commands follow this pattern:
-```
-/command-name [arguments]
-```
-
-### 3. Integration with PRPs
-Commands work seamlessly with your PRP system:
-- Use `/prp-base-create` to generate PRPs
-- Use `/prp-base-execute` to implement them
-- Use `/review-general` to validate the code
-- Use `/create-pr` to submit changes
-
-## Command Categories
-
-### 🎯 Project Management
-- **New Projects**: `/new-project` - Start from scratch
-- **Existing Projects**: `/analyze-project` - Enhance existing codebase
-- **System Setup**: `/setup-prp-system` - Initialize PRP system
-
-### 🎯 PRP Workflow
-- **Creation**: `/prp-base-create`, `/prp-planning-create`, `/prp-spec-create`
-- **Execution**: `/prp-base-execute`, `/prp-spec-execute`, `/prp-task-execute`
-- **Management**: `/prp-task-create`, `/api-contract-define`
-
-### 🔍 Quality Assurance
-- **Review**: `/review-build`, `/review-general`, `/review-staged-unstaged`
-- **Refactoring**: `/refactor-simple`
-- **Debugging**: `/debug-RCA`
-
-### 🚀 Development
-- **Setup**: `/prime-core`, `/onboarding`, `/setup-prp-system`
-- **Workflow**: `/new-dev-branch`, `/smart-commit`
-- **Collaboration**: `/create-pr`
-
-## Best Practices
-
-### 1. Choose the Right Starting Point
-- **New Projects**: Use `/new-project` to start from scratch with comprehensive setup
-- **Existing Projects**: Use `/analyze-project` to enhance existing codebase
-- **PRP System Only**: Use `/setup-prp-system` to add PRP system to any project
-
-### 2. Start with Context
-Always use `/prime-core` when starting a new session to load project context.
-
-### 3. Setup PRP System
-Use `/setup-prp-system` to quickly initialize the PRP system in new projects.
-
-### 3. Use PRPs for Features
-For new features, use the PRP workflow:
-1. `/prp-base-create` to generate the PRP
-2. `/prp-base-execute` to implement it
-3. `/review-general` to validate the code
-
-### 4. Regular Reviews
-Use `/review-staged-unstaged` before committing to ensure code quality.
-
-### 5. Smart Commits
-Use `/smart-commit` to create meaningful commit messages.
-
-## Integration with Your Workflow
-
-### Development Cycle
-1. **Project Setup**: Use `/new-project` or `/analyze-project` to initialize
-2. **Plan**: Use `/prp-planning-create` for new features
-3. **Specify**: Use `/prp-spec-create` for detailed requirements
-4. **Implement**: Use `/prp-base-execute` for development
-5. **Review**: Use `/review-build` for comprehensive analysis, `/review-general` for code review
-6. **Commit**: Use `/smart-commit` for version control
-7. **Submit**: Use `/create-pr` for collaboration
-
-### Team Collaboration
-- Use `/onboarding` for new team members
-- Use `/create-pr` for code reviews
-- Use `/review-general` for quality gates
-- Use `/debug-RCA` for problem solving
-
-## Advanced Usage
-
-### Custom Commands
-You can create custom commands in `.claude/commands/`:
-
-```markdown
-# .claude/commands/my-command.md
-
-# My Custom Command
-
-Description of what this command does.
-
-## Arguments: $ARGUMENTS
-
-[Your command implementation]
-```
-
-### Command Chaining
-Commands can be chained together for complex workflows:
-
-1. `/prp-base-create` → Generate PRP
-2. `/prp-base-execute` → Implement feature
-3. `/review-general` → Validate code
-4. `/smart-commit` → Commit changes
-5. `/create-pr` → Submit for review
-
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Common Issues
-
-1. **Commands not appearing**: Ensure `.claude/commands/` directory exists
-2. **Context not loading**: Use `/prime-core` to reload project context
-3. **PRP execution fails**: Check that ai_docs are properly referenced
+1. **Command not found**: Ensure `.claude` directory is properly set up
+2. **Permission errors**: Check file permissions and git configuration
+3. **Missing dependencies**: Run `/setup-prp-system` to install required tools
 
 ### Getting Help
+- Use `/prime-core` to refresh AI context
+- Check command documentation with `--help` flag
+- Review generated reports and logs for detailed information
 
-- Review the original [PRPs-agentic-eng repository](https://github.com/Wirasm/PRPs-agentic-eng.git)
-- Check the `CLAUDE.md` file for project-specific guidelines
-- Use `/onboarding` for comprehensive setup instructions
+## 📈 Advanced Usage
+
+### Custom Templates
+Create custom templates by modifying the template files in the PRP system.
+
+### Integration with CI/CD
+Use commands in CI/CD pipelines for automated code review and quality checks.
+
+### Team Collaboration
+Share command outputs and reports with team members for better collaboration.
 
 ---
 
-**Ready to supercharge your development?** Start using these commands to experience the full power of AI-assisted development with Claude Code! 🚀 
+*This guide is part of the PRP System Template - an AI-assisted development framework.* 
