@@ -15,6 +15,10 @@ cd prp-system-template
 chmod +x setup-logging.sh
 ./setup-logging.sh
 
+# Set up AI agents (NEW!)
+chmod +x setup-agents.sh
+./setup-agents.sh
+
 # Set up the complete PRP system
 /setup-prp-system --detect-tech --create-example
 ```
@@ -27,6 +31,9 @@ chmod +x setup-logging.sh
 
 # Add logging capabilities
 ./setup-logging.sh
+
+# Install AI agents
+./setup-agents.sh
 ```
 
 ## 📊 NEW: Automatic Logging System
@@ -69,6 +76,49 @@ claude-tokens     # View token usage
 claude-export     # Export conversation to file
 claude-list       # List archived sessions
 ```
+
+## 🤖 NEW: AI Agents System
+
+This template includes a comprehensive set of specialized AI agents for different development tasks:
+
+### Setting Up Agents
+
+```bash
+# Install agents to your user directory
+./setup-agents.sh
+
+# List available agents
+./setup-agents.sh list
+
+# Check installation status
+./setup-agents.sh status
+
+# Force reinstall all agents
+./setup-agents.sh install --force
+```
+
+### Available Agents
+
+- **api-designer** - Design REST, GraphQL, and gRPC APIs with best practices
+- **backend-developer** - Server-side implementation, APIs, authentication, middleware
+- **code-quality-analyzer** - Comprehensive code review and automated fixes
+- **database-specialist** - Schema design, query optimization, data modeling
+- **debugger** - Root cause analysis and error investigation
+- **devops-engineer** - CI/CD, containerization, infrastructure as code
+- **documentation-specialist** - Technical documentation, README files, API docs
+- **frontend-developer** - React, Vue, Angular, and modern UI development
+- **performance-optimizer** - Application performance analysis and optimization
+- **security-auditor** - Security vulnerability assessment and compliance
+- **system-architect** - High-level system design and architecture decisions
+- **test-strategist** - Testing strategies, unit tests, integration tests
+- **ui-ux-designer** - User interface design, accessibility, user experience
+
+### Agent Features
+
+- **Specialized Knowledge**: Each agent has deep expertise in their domain
+- **Context Aware**: Agents understand your project structure and conventions
+- **Tool Integration**: Access to all Claude Code tools for implementation
+- **Quality Focus**: Built-in best practices and validation patterns
 
 ### Enhanced Conversation Logs
 

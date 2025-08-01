@@ -35,6 +35,8 @@ python PRPs/run_prp.py PRPs/my-feature.md
 - [ ] Set up base PRP template
 - [ ] Create Python runner script
 - [ ] Set up ai_docs framework
+- [ ] Install logging system
+- [ ] Install AI agents
 
 ### Phase 2: Project-Specific Documentation (15-30 minutes)
 
@@ -182,9 +184,16 @@ Brief description of the feature or component to be developed.
 ### React/TypeScript Projects
 
 ```bash
-# Setup
+# Complete setup
 ./scripts/setup-prp-system.sh
+./setup-logging.sh
+./setup-agents.sh
 python scripts/detect-tech-stack.py
+
+# Recommended agents
+- frontend-developer: React, Vue, Angular development
+- ui-ux-designer: Interface design and user experience
+- test-strategist: Testing frameworks and strategies
 
 # Common ai_docs
 - react-typescript-conventions.md
@@ -196,9 +205,16 @@ python scripts/detect-tech-stack.py
 ### Node.js/Express Projects
 
 ```bash
-# Setup
+# Complete setup
 ./scripts/setup-prp-system.sh
+./setup-logging.sh
+./setup-agents.sh
 python scripts/detect-tech-stack.py
+
+# Recommended agents
+- backend-developer: Server-side APIs and middleware
+- database-specialist: Database design and optimization
+- security-auditor: API security and authentication
 
 # Common ai_docs
 - express-patterns.md
@@ -210,9 +226,16 @@ python scripts/detect-tech-stack.py
 ### Python/Django Projects
 
 ```bash
-# Setup
+# Complete setup
 ./scripts/setup-prp-system.sh
+./setup-logging.sh
+./setup-agents.sh
 python scripts/detect-tech-stack.py
+
+# Recommended agents
+- backend-developer: Django patterns and best practices
+- database-specialist: PostgreSQL optimization
+- security-auditor: Django security patterns
 
 # Common ai_docs
 - django-patterns.md
@@ -360,6 +383,12 @@ ENTRYPOINT ["./scripts/setup-prp-system.sh"]
 ```bash
 # Setup PRP system
 ./scripts/setup-prp-system.sh
+
+# Setup logging system
+./setup-logging.sh
+
+# Install AI agents
+./setup-agents.sh
 
 # Detect tech stack
 python scripts/detect-tech-stack.py
