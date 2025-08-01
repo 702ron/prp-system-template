@@ -14,7 +14,19 @@
     ],
     "deny": []
   },
+  "maxOutputTokens": 4000,
+  "cleanupPeriodDays": 14,
   "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run .claude/hooks/pre_tool_use_cache.py"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
