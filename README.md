@@ -70,6 +70,47 @@ claude-export     # Export conversation to file
 claude-list       # List archived sessions
 ```
 
+### Enhanced Conversation Logs
+
+The logging system now captures detailed information instead of just placeholders:
+
+**Before:**
+```
+### Message 5 - ASSISTANT [2025-08-01 03:15:03]
+[TOOL: TodoWrite]
+---
+### Message 6 - USER [2025-08-01 03:15:03]
+[TOOL_RESULT]
+```
+
+**After:**
+```
+### Message 5 - ASSISTANT [2025-08-01 03:15:03]
+*Tokens: 6 in + 175 out*
+
+[TOOL USE: TodoWrite]
+Tool ID: toolu_01GhRZA9S2eNP1woJLY6e4Z2
+Parameters:
+  - todos: [4 items]
+---
+### Message 6 - USER [2025-08-01 03:15:03]
+*Tool Result Data: {
+  "oldTodos": [...],
+  "newTodos": [...]
+}*
+
+[TOOL RESULT]
+Tool Use ID: toolu_01GhRZA9S2eNP1woJLY6e4Z2
+Output:
+Todos have been modified successfully...
+```
+
+This provides complete visibility into:
+- Tool parameters and inputs
+- Full tool outputs and results
+- Tool execution IDs for tracing
+- Error states and debugging info
+
 ## 📋 Available Commands
 
 ### 🎯 Core Commands

@@ -123,6 +123,10 @@ class ClaudeConversationLogger:
                     'uuid': entry.get('uuid')
                 }
                 
+                # Add tool result data if available
+                if 'toolUseResult' in entry:
+                    message_data['tool_result_data'] = entry['toolUseResult']
+                
                 # Extract token usage from assistant messages
                 if 'usage' in msg:
                     usage = msg['usage']
@@ -159,11 +163,64 @@ class ClaudeConversationLogger:
                         text_parts.append(item.get('text', ''))
                     elif item.get('type') == 'tool_use':
                         tool_name = item.get('name', 'unknown_tool')
-                        text_parts.append(f"[TOOL: {tool_name}]")
+                        tool_id = item.get('id', '')
+                        tool_input = item.get('input', {})
+                        
+                        # Format tool use with details
+                        tool_text = f"\n[TOOL USE: {tool_name}]"
+                        if tool_id:
+                            tool_text += f"\nTool ID: {tool_id}"
+                        
+                        # Include tool input parameters
+                        if tool_input:
+                            tool_text += "\nParameters:"
+                            tool_text += self._format_tool_input(tool_input, indent=2)
+                        
+                        text_parts.append(tool_text)
                     elif item.get('type') == 'tool_result':
-                        text_parts.append("[TOOL_RESULT]")
-            return ' '.join(text_parts)
+                        tool_result_content = item.get('content', '')
+                        is_error = item.get('is_error', False)
+                        tool_use_id = item.get('tool_use_id', '')
+                        
+                        # Format tool result with content
+                        result_text = "\n[TOOL RESULT]"
+                        if tool_use_id:
+                            result_text += f"\nTool Use ID: {tool_use_id}"
+                        if is_error:
+                            result_text += "\nStatus: ERROR"
+                        
+                        # Include the actual result content
+                        if tool_result_content:
+                            result_text += f"\nOutput:\n{self._truncate_content(tool_result_content, 1000)}"
+                        
+                        text_parts.append(result_text)
+            return '\n'.join(text_parts)
         return str(content)
+    
+    def _format_tool_input(self, tool_input: dict, indent: int = 0) -> str:
+        """Format tool input parameters for display"""
+        lines = []
+        prefix = "  " * indent
+        
+        for key, value in tool_input.items():
+            if isinstance(value, dict):
+                lines.append(f"{prefix}- {key}:")
+                lines.append(self._format_tool_input(value, indent + 1))
+            elif isinstance(value, list):
+                lines.append(f"{prefix}- {key}: [{len(value)} items]")
+            elif isinstance(value, str) and len(value) > 100:
+                # Truncate long strings
+                lines.append(f"{prefix}- {key}: {value[:100]}...")
+            else:
+                lines.append(f"{prefix}- {key}: {value}")
+        
+        return '\n'.join(lines)
+    
+    def _truncate_content(self, content: str, max_length: int = 1000) -> str:
+        """Truncate content if too long"""
+        if len(content) <= max_length:
+            return content
+        return content[:max_length] + f"\n... [truncated, {len(content) - max_length} more characters]"
     
     def estimate_cost(self, total_tokens: int, model: str = "claude-sonnet-4") -> float:
         """Estimate cost based on token usage"""
@@ -222,6 +279,14 @@ class ClaudeConversationLogger:
             if 'token_usage' in msg:
                 usage = msg['token_usage']
                 log_content.append(f"*Tokens: {usage.get('input_tokens', 0)} in + {usage.get('output_tokens', 0)} out*")
+            
+            # Add tool result data if available
+            if 'tool_result_data' in msg:
+                tool_data = msg['tool_result_data']
+                if isinstance(tool_data, dict):
+                    log_content.append(f"*Tool Result Data: {json.dumps(tool_data, indent=2)}*")
+                else:
+                    log_content.append(f"*Tool Result: {tool_data}*")
             
             log_content.append("")
             

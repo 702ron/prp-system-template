@@ -28,7 +28,7 @@ def run_archive_command():
         )
         
         if result.returncode == 0:
-            print(f"✅ Conversation archived successfully", file=sys.stderr)
+            print("✅ Conversation archived successfully", file=sys.stderr)
             if result.stdout:
                 print(result.stdout.strip(), file=sys.stderr)
         else:
@@ -63,7 +63,7 @@ def main():
             try:
                 with open(stop_log, 'r') as f:
                     stop_events = json.load(f)
-            except:
+            except (json.JSONDecodeError, IOError):
                 stop_events = []
         
         stop_events.append({

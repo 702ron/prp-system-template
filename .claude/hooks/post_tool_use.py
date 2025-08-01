@@ -30,13 +30,12 @@ def get_current_token_usage():
         if result.returncode == 0 and result.stdout:
             return result.stdout.strip()
         return None
-    except:
+    except Exception:
         return None
 
 def log_tool_usage(input_data, logs_dir):
     """Log tool usage to daily file."""
     tool_name = input_data.get('tool_name', 'unknown')
-    tool_input = input_data.get('tool_input', {})
     tool_response = input_data.get('tool_response', {})
     timestamp = datetime.now().isoformat()
     
@@ -49,7 +48,7 @@ def log_tool_usage(input_data, logs_dir):
         try:
             with open(tool_log_file, 'r') as f:
                 tool_logs = json.load(f)
-        except:
+        except (json.JSONDecodeError, IOError):
             tool_logs = []
     else:
         tool_logs = []
