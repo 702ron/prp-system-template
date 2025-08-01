@@ -90,6 +90,16 @@ if [ ! -f ".claude/settings.local.json" ]; then
           }
         ]
       }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run .claude/hooks/pre_compact.py"
+          }
+        ]
+      }
     ]
   }
 }
@@ -119,6 +129,10 @@ alias claude-cleanup='bash .claude/scripts/claude_archive_system.sh cleanup'
 # Direct data access
 alias claude-tokens='python3 .claude/scripts/claude_jsonl_logger.py --summary'
 alias claude-json='python3 .claude/scripts/claude_jsonl_logger.py --json'
+
+# Summary generation
+alias claude-summary='uv run .claude/scripts/conversation_summary_generator.py'
+alias claude-create-summary='uv run .claude/scripts/conversation_summary_generator.py --trigger manual'
 
 # Quick functions
 claude-current() {
