@@ -11,7 +11,11 @@ venv/
 
 # Claude Code logs and archives
 logs/
-.claude/logs/
+.claude/logs/*
+!.claude/logs/current/
+!.claude/logs/archive/
+!.claude/logs/current/.gitkeep
+!.claude/logs/archive/.gitkeep
 *.log
 *.jsonl
 

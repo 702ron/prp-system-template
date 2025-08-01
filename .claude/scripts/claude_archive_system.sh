@@ -10,9 +10,27 @@ CURRENT_DIR="$PROJECT_LOG_DIR/current"
 # Ensure directories exist
 mkdir -p "$ARCHIVE_DIR" "$CURRENT_DIR"
 
+# Archive old session files for different session IDs
+archive_old_sessions() {
+    local current_session_id="$1"
+    local timestamp=$(date '+%Y%m%d_%H%M%S')
+    
+    # Find existing conversation files and archive them
+    for conv_file in "$CURRENT_DIR"/convo-*.md; do
+        if [ -f "$conv_file" ]; then
+            local filename=$(basename "$conv_file")
+            # Move to archive with additional timestamp suffix
+            local archive_name="${filename%.md}_archived_${timestamp}.md"
+            local archive_path="$ARCHIVE_DIR/$archive_name"
+            
+            mv "$conv_file" "$archive_path" 2>/dev/null && \
+                echo "📦 Archived old conversation: $archive_path"
+        fi
+    done
+}
+
 # Generate current session archive
 archive_current_session() {
-    local timestamp=$(date '+%Y%m%d_%H%M%S')
     local project_name=$(basename "$PWD")
     
     echo "🗂️  Archiving current Claude Code session..."
@@ -29,42 +47,21 @@ archive_current_session() {
         local total_tokens=$(echo "$summary_output" | grep "Total Tokens:" | cut -d' ' -f3 | tr -d ',')
         local estimated_cost=$(echo "$summary_output" | grep "Estimated Cost:" | cut -d'$' -f2)
         
-        # Create session summary
-        local summary_file="$CURRENT_DIR/session_summary.md"
-        cat > "$summary_file" << EOF
-# Current Session Summary
-
-**Session ID**: $session_id  
-**Project**: $project_name  
-**Date**: $(date '+%Y-%m-%d %H:%M:%S')  
-**Messages**: $message_count  
-**Tokens**: $(printf "%'d" $total_tokens 2>/dev/null || echo $total_tokens)  
-**Cost**: \$$estimated_cost  
-
-## Quick Actions
-- [View Full Conversation](#view-conversation)
-- [Export Archive](#export-archive)
-- [Resume Context](#resume-context)
-
----
-*Updated: $(date '+%Y-%m-%d %H:%M:%S')*
-EOF
+        # Archive old sessions before creating new one
+        archive_old_sessions "$session_id"
+        
+        # Create timestamp-based file names
+        local timestamp=$(date '+%Y%m%d_%H%M%S')
+        local conversation_file="$CURRENT_DIR/convo-$timestamp.md"
         
         # Generate full conversation archive
-        local conversation_file="$CURRENT_DIR/full_conversation.md"
         python3 "$script_dir/claude_jsonl_logger.py" -o "$conversation_file" 2>/dev/null
         
         if [ -f "$conversation_file" ]; then
             echo "✅ Session archived:"
-            echo "   📊 Summary: $summary_file"
             echo "   💬 Conversation: $conversation_file"
             echo "   📈 Stats: $message_count messages, $total_tokens tokens, \$$estimated_cost"
-            
-            # Create archived copy with timestamp
-            cp "$summary_file" "$ARCHIVE_DIR/session_${timestamp}_summary.md"
-            cp "$conversation_file" "$ARCHIVE_DIR/conversation_${timestamp}.md"
-            
-            echo "   🗃️  Archived copies created in $ARCHIVE_DIR"
+            echo "   🆔 Session ID: $session_id"
         else
             echo "❌ Failed to generate conversation archive"
         fi
@@ -97,10 +94,23 @@ show_current_status() {
     echo "📋 Current Claude Code Session Status"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     
-    if [ -f "$CURRENT_DIR/session_summary.md" ]; then
-        cat "$CURRENT_DIR/session_summary.md"
+    # Look for any current conversation files
+    local current_files=("$CURRENT_DIR"/convo-*.md)
+    if [ -f "${current_files[0]}" ]; then
+        local current_file="${current_files[0]}"
+        local timestamp=$(basename "$current_file" | sed 's/convo-\(.*\)\.md/\1/')
+        
+        echo "**Current Session**: $timestamp"
+        echo "**Conversation File**: $current_file"
+        echo "**File Size**: $(du -h "$current_file" | cut -f1)"
+        echo "**Last Modified**: $(stat -c '%y' "$current_file" 2>/dev/null || stat -f '%Sm' "$current_file")"
+        echo ""
+        echo "## Quick Actions"
+        echo "- View: \`cat \"$current_file\"\`"
+        echo "- Open: \`open \"$current_file\"\`"
+        echo "- Archive: \`$0 archive\`"
     else
-        echo "No current session archive found."
+        echo "No current session conversation found."
         echo ""
         echo "Run: $0 archive"
     fi
@@ -115,13 +125,26 @@ list_archives() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     
     if [ -d "$ARCHIVE_DIR" ] && [ "$(ls -A "$ARCHIVE_DIR" 2>/dev/null)" ]; then
-        echo "Recent archives:"
-        ls -t "$ARCHIVE_DIR"/*summary.md 2>/dev/null | head -5 | while read -r file; do
+        echo "Recent archived conversations:"
+        
+        # Show session-based archives first
+        ls -t "$ARCHIVE_DIR"/convo-*_*.md 2>/dev/null | head -5 | while read -r file; do
+            if [ -f "$file" ]; then
+                local basename_file=$(basename "$file")
+                local session_part=$(echo "$basename_file" | sed 's/convo-\([^_]*\)_.*\.md/\1/')
+                local date_part=$(echo "$basename_file" | grep -o '[0-9]\{8\}_[0-9]\{6\}')
+                local readable_date=$(echo "$date_part" | sed 's/_/ /' | sed 's/\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\) \([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)/\1-\2-\3 \4:\5:\6/')
+                echo "  🆔 ${session_part:0:8}... archived on $readable_date"
+            fi
+        done
+        
+        # Show legacy timestamp-based archives
+        ls -t "$ARCHIVE_DIR"/conversation_*.md 2>/dev/null | head -3 | while read -r file; do
             if [ -f "$file" ]; then
                 local basename_file=$(basename "$file")
                 local date_part=$(echo "$basename_file" | grep -o '[0-9]\{8\}_[0-9]\{6\}')
                 local readable_date=$(echo "$date_part" | sed 's/_/ /' | sed 's/\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\) \([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)/\1-\2-\3 \4:\5:\6/')
-                echo "  📅 $readable_date"
+                echo "  📅 Legacy archive from $readable_date"
             fi
         done
         
@@ -157,20 +180,21 @@ cleanup_blank_logs() {
 # Show help
 show_help() {
     echo "Claude Code Archive System"
-    echo "Clean implementation using JSONL data only"
+    echo "Session-based conversation archiving using JSONL data"
     echo ""
     echo "Usage: $0 {archive|status|list|cleanup|help}"
     echo ""
     echo "Commands:"
-    echo "  archive  - Archive current session with real data"
-    echo "  status   - Show current session status and summary"
-    echo "  list     - List archived sessions"
+    echo "  archive  - Archive current session with session ID-based naming"
+    echo "  status   - Show current active session and file details"
+    echo "  list     - List archived sessions (both session-based and legacy)"
     echo "  cleanup  - Remove blank/broken log files"
     echo "  help     - Show this help"
     echo ""
-    echo "Files stored in: $PROJECT_LOG_DIR"
-    echo "Current session: $CURRENT_DIR"
-    echo "Archives: $ARCHIVE_DIR"
+    echo "File Structure:"
+    echo "  Current:  $CURRENT_DIR/convo-<timestamp>.md"
+    echo "  Archive:  $ARCHIVE_DIR/convo-<timestamp>_archived_<timestamp>.md"
+    echo "  Logs:     $PROJECT_LOG_DIR"
 }
 
 # Main command handler

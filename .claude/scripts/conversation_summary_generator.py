@@ -229,34 +229,58 @@ class ConversationAnalyzer:
                 print(f"Warning: Could not read existing summary: {e}", file=sys.stderr)
         return None
     
+    def get_session_id_from_conversation(self, conversation_file: Path) -> str:
+        """Extract session ID from conversation file name or content."""
+        # First try to get from filename
+        filename = conversation_file.stem
+        if len(filename) == 36 and filename.count('-') == 4:  # UUID format
+            return filename
+        
+        # Fallback: read first message to get session ID
+        try:
+            with open(conversation_file, 'r') as f:
+                first_line = f.readline().strip()
+                if first_line:
+                    data = json.loads(first_line)
+                    return data.get('session_id', filename)
+        except Exception:
+            pass
+        
+        return filename
+    
+    def archive_old_conversation(self, current_dir: Path, archive_dir: Path, session_id: str) -> None:
+        """Move old conversation files to archive directory."""
+        archive_dir.mkdir(exist_ok=True, parents=True)
+        
+        # Find existing conversation files in current directory
+        for conv_file in current_dir.glob("convo-*.md"):
+            if conv_file.stem != f"convo-{session_id}":
+                # Move to archive with timestamp
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                archive_name = f"{conv_file.stem}_{timestamp}.md"
+                archive_path = archive_dir / archive_name
+                
+                try:
+                    conv_file.rename(archive_path)
+                    print(f"📦 Archived old conversation: {archive_path}", file=sys.stderr)
+                except Exception as e:
+                    print(f"Warning: Could not archive {conv_file}: {e}", file=sys.stderr)
+    
     def merge_with_existing_summary(self, new_summary: str, existing_summary: Optional[str]) -> str:
-        """Merge new summary with existing one, preserving historical context."""
+        """Update existing summary with new content (for same session)."""
         if not existing_summary:
             return new_summary
         
-        # Extract session information from both summaries
+        # For same session, just update with latest content
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        # Create a combined summary that shows the evolution
-        merged_summary = f"""# Conversation Summary - Updated {timestamp}
-
-*This summary tracks the evolution of the conversation across multiple updates*
-
-## Latest Session Update
-
-{new_summary.split('## Overview', 1)[1] if '## Overview' in new_summary else new_summary}
-
----
-
-## Previous Session History
-
-{existing_summary.split('## Overview', 1)[1] if '## Overview' in existing_summary else existing_summary}
-
----
-
-*Summary file updated automatically by the Claude Code logging system*
-"""
-        return merged_summary
+        # Replace the summary content but preserve session info
+        updated_summary = new_summary.replace(
+            "*Generated automatically at", 
+            f"*Last updated at {timestamp}, originally generated at"
+        )
+        
+        return updated_summary
 
     def generate_summary(self, trigger: str = "manual") -> str:
         """Generate a simplified project summary for next session context."""
@@ -393,19 +417,31 @@ def main(output_file: Optional[str], format: str, include_context: bool, trigger
     # Generate summary
     summary = analyzer.generate_summary(trigger)
     
-    # Determine output filename - use single file in .claude/logs
+    # Get session ID for file naming
+    conversation_file = analyzer.find_latest_conversation()
+    if not conversation_file:
+        print("No conversation file found", file=sys.stderr)
+        return
+    
+    session_id = analyzer.get_session_id_from_conversation(conversation_file)
+    
+    # Determine output filename using session ID
     if not output_file:
-        output_file = "CONVERSATION_SUMMARY.md"
+        output_file = f"convo-{session_id}.md"
     
-    # Use .claude/logs directory instead of project logs
+    # Set up directory structure: .claude/logs/current/ and .claude/logs/archive/
     claude_logs_dir = project_root / ".claude" / "logs"
-    claude_logs_dir.mkdir(exist_ok=True, parents=True)
+    current_dir = claude_logs_dir / "current"
+    archive_dir = claude_logs_dir / "archive"
+    current_dir.mkdir(exist_ok=True, parents=True)
     
-    # Single summary file path
-    output_path = claude_logs_dir / output_file
+    # Archive old conversations before creating new one
+    analyzer.archive_old_conversation(current_dir, archive_dir, session_id)
     
-    # Read existing summary and merge if it exists
-    analyzer = ConversationAnalyzer(project_root)
+    # Session-based file path
+    output_path = current_dir / output_file
+    
+    # Read existing summary and merge if it exists (same session)
     existing_summary = analyzer.read_existing_summary(output_path)
     if existing_summary:
         summary = analyzer.merge_with_existing_summary(summary, existing_summary)
@@ -416,37 +452,22 @@ def main(output_file: Optional[str], format: str, include_context: bool, trigger
         print(f"📋 Summary written to: {output_path}")
     
     if format in ['json', 'both']:
-        # Also create JSON version for programmatic use in same directory
-        json_path = claude_logs_dir / "CONVERSATION_SUMMARY.json"
+        # Also create JSON version for programmatic use in current directory
+        json_path = current_dir / f"convo-{session_id}.json"
         
-        # Read existing JSON data if it exists
-        existing_json_data = []
-        if json_path.exists():
-            try:
-                with open(json_path, 'r') as f:
-                    existing_data = json.load(f)
-                    if isinstance(existing_data, list):
-                        existing_json_data = existing_data
-                    elif isinstance(existing_data, dict):
-                        existing_json_data = [existing_data]
-            except Exception:
-                pass
-        
-        # Add new entry
-        new_json_data = {
+        # For JSON, update the existing session file or create new
+        json_data = {
+            "session_id": session_id,
             "timestamp": datetime.now().isoformat(),
             "trigger": trigger,
             "summary": summary,
             "project_root": str(project_root),
-            "message_count": len(messages) if 'messages' in locals() else 0,
-            "session_id": analyzer.find_latest_conversation().stem if analyzer.find_latest_conversation() else "unknown"
+            "last_updated": datetime.now().isoformat()
         }
         
-        existing_json_data.append(new_json_data)
-        
         with open(json_path, 'w') as f:
-            json.dump(existing_json_data, f, indent=2)
-        print(f"📊 JSON data appended to: {json_path}")
+            json.dump(json_data, f, indent=2)
+        print(f"📊 JSON data written to: {json_path}")
     
     # Print summary to stdout for immediate viewing
     if trigger == 'manual':

@@ -169,6 +169,7 @@ prp-system-template/
 ├── .claude/                    # Claude Code configuration
 │   ├── commands/              # 28+ slash commands
 │   ├── hooks/                 # Logging & optimization hooks
+│   ├── logs/                  # Session logs (current & archive)
 │   ├── scripts/               # Setup & utility scripts
 │   └── settings.template.json # Configuration template
 ├── PRPs/                      # Product Requirement Prompts
