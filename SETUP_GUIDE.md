@@ -1,12 +1,44 @@
 # PRP System Setup Guide
 
-## ✅ Setup Complete!
+## 🚀 Quick Start - Complete Setup
 
-Your PRP (Product Requirement Prompt) system has been successfully set up! Here's what was created:
+```bash
+# 1. Clone the template
+git clone <repository-url>
+cd prp-system-template
+
+# 2. Set up logging (NEW!)
+chmod +x setup-logging.sh
+./setup-logging.sh
+
+# 3. Source the aliases
+source .claude/logging_aliases.sh
+
+# 4. Set up PRP system (if needed)
+/setup-prp-system --detect-tech --create-example
+```
+
+## ✅ What Gets Set Up
+
+Your complete PRP system with logging includes:
 
 ### 📁 Directory Structure
 
 ```
+.claude/                     # Claude Code configuration
+├── commands/                # Slash commands
+├── hooks/                   # Logging hooks (NEW!)
+│   ├── user_prompt_submit.py
+│   ├── stop_hook.py
+│   └── post_tool_use.py
+├── scripts/                 # Logging scripts (NEW!)
+│   ├── claude_archive_system.sh
+│   └── claude_jsonl_logger.py
+├── logs/                    # Conversation archives
+│   ├── current/
+│   └── archive/
+└── settings.template.json   # Template settings
+
 PRPs/
 ├── templates/
 │   └── prp_base.md          # Base template for all PRPs
@@ -17,7 +49,49 @@ PRPs/
 ├── examples/                # Example PRPs
 ├── run_prp.py              # Python runner script
 └── README.md               # PRP system guide
+
+logs/                        # Project-level logs (NEW!)
+├── user_prompts_*.json      # Daily prompt logs
+├── tool_usage_*.json        # Tool usage tracking
+└── token_summary.txt        # Token usage summary
 ```
+
+## 📊 NEW: Logging System
+
+The template now includes automatic logging that tracks all your Claude interactions:
+
+### Features
+
+- **Automatic prompt logging**: Every prompt is saved with timestamp
+- **Token tracking**: Real-time token usage from Claude's native logs
+- **Cost estimation**: Automatic cost calculations
+- **Conversation archives**: Full transcripts with metadata
+- **Tool usage tracking**: Monitor which tools are used most
+
+### Using the Logging System
+
+```bash
+# Check current session
+claude-status
+
+# View token usage
+claude-tokens
+
+# Archive current session
+claude-archive
+
+# Export conversation
+claude-export my-conversation.md
+
+# List all archives
+claude-list
+```
+
+### Log Locations
+
+- **Project logs**: `./logs/` - Daily logs of prompts and tool usage
+- **Conversation archives**: `./.claude/logs/` - Full conversation transcripts
+- **Current session**: `./.claude/logs/current/` - Live session data
 
 ### 🚀 How to Use the PRP System
 

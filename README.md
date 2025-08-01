@@ -1,6 +1,6 @@
 # PRP System Template
 
-An AI-assisted development framework that combines Product Requirement Prompts (PRPs) with comprehensive Claude slash commands for structured, efficient development workflows.
+An AI-assisted development framework that combines Product Requirement Prompts (PRPs) with comprehensive Claude slash commands for structured, efficient development workflows. Now includes automatic conversation logging and token usage tracking!
 
 ## 🚀 Quick Start
 
@@ -11,6 +11,10 @@ An AI-assisted development framework that combines Product Requirement Prompts (
 git clone <repository-url>
 cd prp-system-template
 
+# Set up logging system (NEW!)
+chmod +x setup-logging.sh
+./setup-logging.sh
+
 # Set up the complete PRP system
 /setup-prp-system --detect-tech --create-example
 ```
@@ -20,6 +24,50 @@ cd prp-system-template
 ```bash
 # Analyze and integrate with existing project
 /analyze-project --tech-stack --structure --create-prps
+
+# Add logging capabilities
+./setup-logging.sh
+```
+
+## 📊 NEW: Automatic Logging System
+
+This template now includes a comprehensive logging system that tracks:
+- All user prompts to Claude
+- Complete conversation transcripts
+- Token usage (input, output, cache)
+- Estimated costs
+- Tool usage patterns
+
+### Setting Up Logging
+
+```bash
+# Run the setup script
+./setup-logging.sh
+
+# Source the aliases (add to your shell profile)
+source .claude/logging_aliases.sh
+
+# Check current session
+claude-status
+```
+
+### Logging Features
+
+- **Automatic**: Logs are created automatically via Claude Code hooks
+- **Project-level logs**: Stored in `./logs/` directory
+- **Conversation archives**: Full transcripts in `./.claude/logs/`
+- **Token tracking**: Real-time token usage from Claude's native logs
+- **Cost estimation**: Automatic cost calculations
+- **Daily logs**: Organized by date for easy review
+
+### Available Commands
+
+```bash
+claude-archive    # Archive current session
+claude-status     # Show current session info
+claude-tokens     # View token usage
+claude-export     # Export conversation to file
+claude-list       # List archived sessions
 ```
 
 ## 📋 Available Commands

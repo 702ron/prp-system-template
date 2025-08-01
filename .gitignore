@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv
+.env
+
+# Claude Code logs and archives
+logs/
+.claude/logs/
+*.log
+*.jsonl
+
+# Local settings
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project output
+output/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Session data
+*session*.json
+*session*.md
+*conversation*.md
+*conversation*.log
+
+# Token summaries
+token_summary.txt
+stop_events.json
