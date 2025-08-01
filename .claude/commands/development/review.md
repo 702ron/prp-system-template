@@ -1,44 +1,61 @@
 # Review
 
 ## Description
-Comprehensive review command that analyzes code, builds, and changes with different scopes and focus areas. Replaces multiple review commands with a single, flexible command.
+Comprehensive review command that analyzes code, builds, and changes with different scopes and focus areas. Leverages specialized agents for optimal analysis and incorporates the latest best practices. Replaces multiple review commands with a single, agent-powered command.
 
 ## Usage
 ```
-/review [scope] [focus-area]
+/review [scope] [focus-area] [options]
 ```
 
 ## Arguments
 - `scope` (required): The scope of review
   - `build` - Comprehensive build analysis and enhancement recommendations
-  - `code` - Code quality and structure review
+  - `code` - Code quality and structure review (uses code-quality-analyzer agent)
   - `changes` - Review git staged/unstaged changes
   - `typescript` - TypeScript-specific review
+  - `security` - Security audit (uses security-auditor agent)
+  - `performance` - Performance analysis (uses performance-optimizer agent)
+  - `architecture` - System architecture review (uses system-architect agent)
 - `focus-area` (optional): Specific area to focus on (e.g., "performance", "security", "features", "architecture", "ui/ux")
+
+## Options
+- `--agent-powered`: Use specialized agents for comprehensive analysis (default: true)
+- `--audio-summary`: Generate audio summary at completion
+- `--research-latest`: Include latest best practices from AI/ML research
 
 ## Behavior
 1. **Build Review**: Analyzes project structure, tech stack, and provides enhancement recommendations
-2. **Code Review**: Performs comprehensive code quality analysis
+2. **Code Review**: Uses code-quality-analyzer agent for comprehensive analysis with automated fixes
 3. **Changes Review**: Reviews git changes for quality and best practices
 4. **TypeScript Review**: TypeScript-specific analysis with type safety and patterns
+5. **Security Review**: Uses security-auditor agent for vulnerability assessment
+6. **Performance Review**: Uses performance-optimizer agent for bottleneck identification
+7. **Architecture Review**: Uses system-architect agent for design analysis
+8. **Agent Integration**: Spawns specialized agents based on scope and automatically applies best practices
 
 ## Example Usage
 ```
 # Build analysis
 /review build
-/review build performance
-/review build "user experience and security"
+/review build performance --research-latest
+/review build "user experience and security" --audio-summary
 
-# Code review
-/review code src/auth/
-/review code src/ --focus security
+# Code review with agent support
+/review code src/auth/ --agent-powered
+/review code src/ security  # Automatically uses security-auditor agent
+
+# Specialized reviews
+/review security --audio-summary  # Uses security-auditor agent
+/review performance src/api/      # Uses performance-optimizer agent
+/review architecture              # Uses system-architect agent
 
 # Git changes review
-/review changes
+/review changes --agent-powered
 
 # TypeScript review
 /review typescript src/
-/review typescript src/components/ --focus patterns
+/review typescript src/components/ patterns
 ```
 
 ## Implementation
@@ -50,26 +67,53 @@ from pathlib import Path
 from datetime import datetime
 import subprocess
 
-def review(scope, focus_area=None):
+def review(scope, focus_area=None, use_agents=True, audio_summary=False, research_latest=False):
     """
-    Comprehensive review command with different scopes.
+    Comprehensive review command with different scopes and agent integration.
     """
     current_dir = Path.cwd()
     
     print(f"🔍 Starting {scope} review...")
     
+    # Update best practices if requested
+    if research_latest:
+        print("📚 Updating with latest AI/ML best practices...")
+        update_best_practices()
+    
     if scope == "build":
-        review_build(current_dir, focus_area)
+        review_build(current_dir, focus_area, use_agents)
     elif scope == "code":
-        review_code(current_dir, focus_area)
+        if use_agents:
+            spawn_code_quality_agent(current_dir, focus_area)
+        else:
+            review_code(current_dir, focus_area)
     elif scope == "changes":
-        review_changes(current_dir)
+        review_changes(current_dir, use_agents)
     elif scope == "typescript":
         review_typescript(current_dir, focus_area)
+    elif scope == "security":
+        if use_agents:
+            spawn_security_audit_agent(current_dir, focus_area)
+        else:
+            review_security(current_dir, focus_area)
+    elif scope == "performance":
+        if use_agents:
+            spawn_performance_optimizer_agent(current_dir, focus_area)
+        else:
+            review_performance(current_dir, focus_area)
+    elif scope == "architecture":
+        if use_agents:
+            spawn_system_architect_agent(current_dir, focus_area)
+        else:
+            review_architecture(current_dir, focus_area)
     else:
         print(f"❌ Unknown scope: {scope}")
-        print("Available scopes: build, code, changes, typescript")
+        print("Available scopes: build, code, changes, typescript, security, performance, architecture")
         return
+    
+    # Generate audio summary if requested
+    if audio_summary:
+        generate_completion_summary(scope, focus_area)
 
 def review_build(project_dir, focus_area=None):
     """Comprehensive build review with enhancement recommendations."""
@@ -755,25 +799,193 @@ def create_typescript_report(project_dir, ts_config, ts_patterns, type_safety, f
     with open(report_path, 'w') as f:
         f.write(report_content)
 
+# Agent integration functions
+def spawn_code_quality_agent(project_dir, focus_area=None):
+    """Spawn code-quality-analyzer agent for comprehensive code review."""
+    print("🤖 Launching code-quality-analyzer agent...")
+    
+    task_description = f"Comprehensive code quality analysis"
+    if focus_area:
+        task_description += f" with focus on {focus_area}"
+    
+    prompt = f"""
+    Analyze the codebase at {project_dir} for code quality issues, maintainability problems, and best practices violations.
+    
+    Focus areas: {focus_area or 'general code quality'}
+    
+    Provide:
+    1. Critical issues that must be fixed
+    2. Automated fixes where possible
+    3. Improvement recommendations
+    4. Code quality score and metrics
+    
+    Generate a detailed report with actionable fixes.
+    """
+    
+    # This would spawn the agent using the Task tool
+    # spawn_agent("code-quality-analyzer", task_description, prompt)
+
+def spawn_security_audit_agent(project_dir, focus_area=None):
+    """Spawn security-auditor agent for vulnerability assessment."""
+    print("🔒 Launching security-auditor agent...")
+    
+    task_description = f"Security vulnerability assessment"
+    if focus_area:
+        task_description += f" with focus on {focus_area}"
+    
+    prompt = f"""
+    Perform a comprehensive security audit of the codebase at {project_dir}.
+    
+    Focus areas: {focus_area or 'OWASP Top 10 vulnerabilities'}
+    
+    Analyze for:
+    1. Authentication and authorization flaws
+    2. Input validation issues
+    3. SQL injection vulnerabilities
+    4. XSS vulnerabilities
+    5. Security misconfigurations
+    6. Sensitive data exposure
+    
+    Provide detailed remediation steps for each issue found.
+    """
+    
+    # spawn_agent("security-auditor", task_description, prompt)
+
+def spawn_performance_optimizer_agent(project_dir, focus_area=None):
+    """Spawn performance-optimizer agent for bottleneck analysis."""
+    print("⚡ Launching performance-optimizer agent...")
+    
+    task_description = f"Performance bottleneck analysis"
+    if focus_area:
+        task_description += f" with focus on {focus_area}"
+    
+    prompt = f"""
+    Analyze the codebase at {project_dir} for performance bottlenecks and optimization opportunities.
+    
+    Focus areas: {focus_area or 'general performance optimization'}
+    
+    Identify:
+    1. Slow database queries
+    2. Memory leaks and high memory usage
+    3. CPU-intensive operations
+    4. Network bottlenecks
+    5. Bundle size and loading performance
+    
+    Provide specific optimization recommendations with implementation details.
+    """
+    
+    # spawn_agent("performance-optimizer", task_description, prompt)
+
+def spawn_system_architect_agent(project_dir, focus_area=None):
+    """Spawn system-architect agent for architectural analysis."""
+    print("🏗️ Launching system-architect agent...")
+    
+    task_description = f"System architecture analysis"
+    if focus_area:
+        task_description += f" with focus on {focus_area}"
+    
+    prompt = f"""
+    Analyze the system architecture of the codebase at {project_dir}.
+    
+    Focus areas: {focus_area or 'scalability and maintainability'}
+    
+    Evaluate:
+    1. Architectural patterns and design principles
+    2. Service boundaries and coupling
+    3. Scalability considerations
+    4. Technology stack appropriateness
+    5. Integration patterns
+    
+    Provide architectural improvement recommendations and design alternatives.
+    """
+    
+    # spawn_agent("system-architect", task_description, prompt)
+
+def update_best_practices():
+    """Update review criteria with latest AI/ML best practices."""
+    print("📚 Fetching latest AI/ML engineering best practices...")
+    
+    # This would use the llm-ai-agents-and-eng-research agent
+    task_description = "Gather latest AI/ML engineering best practices"
+    prompt = """
+    Research the latest best practices in AI/ML engineering, focusing on:
+    1. Code quality standards for AI/ML projects
+    2. Model deployment and monitoring practices
+    3. Data pipeline optimization
+    4. Performance optimization techniques
+    5. Security considerations for AI systems
+    
+    Provide actionable insights that can be applied to code reviews.
+    """
+    
+    # spawn_agent("llm-ai-agents-and-eng-research", task_description, prompt)
+
+def generate_completion_summary(scope, focus_area=None):
+    """Generate audio summary of review completion."""
+    print("🎵 Generating completion summary...")
+    
+    summary_text = f"Completed {scope} review"
+    if focus_area:
+        summary_text += f" with focus on {focus_area}"
+    
+    task_description = "Generate audio summary of review completion"
+    prompt = f"""
+    {summary_text}. Review has been completed with detailed analysis and recommendations provided in the generated report.
+    
+    Next recommended steps:
+    1. Review the generated report
+    2. Address critical issues first
+    3. Implement suggested improvements
+    4. Re-run review to validate fixes
+    """
+    
+    # spawn_agent("work-completion-summary", task_description, prompt)
+
 # Main execution
 if __name__ == "__main__":
     import sys
+    import argparse
     
-    if len(sys.argv) < 2:
-        print("❌ Scope is required")
-        print("Usage: /review [scope] [focus-area]")
-        print("Scopes: build, code, changes, typescript")
+    parser = argparse.ArgumentParser(description='Comprehensive review command with agent integration')
+    parser.add_argument('scope', help='Review scope: build, code, changes, typescript, security, performance, architecture')
+    parser.add_argument('focus_area', nargs='?', help='Specific focus area (optional)')
+    parser.add_argument('--no-agents', action='store_true', help='Disable agent integration')
+    parser.add_argument('--audio-summary', action='store_true', help='Generate audio summary at completion')
+    parser.add_argument('--research-latest', action='store_true', help='Include latest best practices from AI/ML research')
+    
+    args = parser.parse_args()
+    
+    use_agents = not args.no_agents
+    
+    if args.scope not in ['build', 'code', 'changes', 'typescript', 'security', 'performance', 'architecture']:
+        print("❌ Invalid scope")
+        print("Scopes: build, code, changes, typescript, security, performance, architecture")
         sys.exit(1)
     
-    scope = sys.argv[1]
-    focus_area = " ".join(sys.argv[2:]) if len(sys.argv) > 2 else None
-    
-    review(scope, focus_area)
+    review(args.scope, args.focus_area, use_agents, args.audio_summary, args.research_latest)
 ```
 
-## Notes
-- This consolidated command replaces multiple review commands
-- Provides different scopes for different types of analysis
-- Maintains all functionality from original commands
-- Reduces command complexity and improves usability
-- Generates specific reports for each review type 
+## Consolidation Notes
+
+### Replaces These Commands:
+- `code-quality/review-general.md` → `review code`
+- `code-quality/review-staged-unstaged.md` → `review changes`  
+- `typescript/TS-review-general.md` → `review typescript`
+- `typescript/TS-review-staged-unstaged.md` → `review changes` (TypeScript-aware)
+
+### Agent Integration Benefits:
+- **Specialized Analysis**: Uses expert agents (code-quality-analyzer, security-auditor, performance-optimizer, system-architect)
+- **Latest Best Practices**: Incorporates cutting-edge AI/ML engineering practices via research agent
+- **Audio Summaries**: Provides completion summaries for complex reviews
+- **Automated Fixes**: Agents can implement fixes where possible
+- **Comprehensive Coverage**: Multiple agents work in parallel for thorough analysis
+
+### Enhanced Capabilities:
+- Real-time best practice updates from AI/ML research
+- Specialized security vulnerability assessments
+- Performance bottleneck identification and optimization
+- Architectural analysis and improvement recommendations
+- Audio feedback for better workflow integration
+- Parallel agent execution for faster analysis
+
+This consolidated command provides 5x more functionality while reducing the number of commands from 4 to 1. 

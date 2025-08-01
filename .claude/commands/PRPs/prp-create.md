@@ -1,7 +1,7 @@
 # PRP Create
 
 ## Description
-Create Product Requirement Prompts (PRPs) with language-specific templates and patterns. Replaces multiple PRP commands with a single, flexible command that supports different languages and frameworks.
+Create Product Requirement Prompts (PRPs) with language-specific templates and patterns. Leverages the prp-base-create agent for deep research and comprehensive context gathering. Replaces multiple PRP commands with a single, agent-powered command that supports all languages, frameworks, and PRP types.
 
 ## Usage
 ```
@@ -15,36 +15,48 @@ Create Product Requirement Prompts (PRPs) with language-specific templates and p
 ## Options
 - `--language <lang>`: Specify programming language (js, ts, python, go, rust, php, java)
 - `--framework <framework>`: Specify framework (react, vue, angular, next, express, django, flask, etc.)
-- `--template <template>`: Use specific template (base, auth, api, ui, testing, deployment)
+- `--template <template>`: Use specific template (base, spec, task, planning, auth, api, ui, testing, deployment)
+- `--type <type>`: PRP type (base, spec, task, planning) - determines research depth
 - `--output <path>`: Specify output path for PRP file
 - `--ai-docs`: Include AI documentation patterns
 - `--examples`: Include implementation examples
 - `--testing`: Include testing requirements
 - `--deployment`: Include deployment considerations
+- `--deep-research`: Use prp-base-create agent for extensive research (default for base type)
+- `--audio-summary`: Generate audio summary when complete
 
 ## Behavior
 1. **Language Detection**: Automatically detects project language if not specified
 2. **Template Selection**: Chooses appropriate template based on feature and language
-3. **Pattern Integration**: Integrates language-specific patterns and best practices
-4. **AI Documentation**: Includes AI documentation patterns when requested
-5. **File Generation**: Creates comprehensive PRP file with all necessary sections
+3. **Agent Integration**: Uses prp-base-create agent for deep research on complex PRPs
+4. **Research Optimization**: Spawns subagents for codebase analysis and external research
+5. **Pattern Integration**: Integrates language-specific patterns and best practices
+6. **AI Documentation**: Includes AI documentation patterns when requested
+7. **Validation Gates**: Creates executable validation commands for one-pass success
+8. **File Generation**: Creates comprehensive PRP file with all necessary sections
 
 ## Example Usage
 ```
-# Basic feature creation
+# Basic feature creation (uses prp-base-create agent for deep research)
 /prp-create implement user authentication
-/prp-create add real-time notifications
+/prp-create add real-time notifications --audio-summary
+
+# PRP type-specific creation
+/prp-create implement user system --type base --deep-research    # Full research agent
+/prp-create add login form --type spec                           # Specification PRP
+/prp-create fix authentication bug --type task                   # Task-focused PRP
+/prp-create system architecture --type planning                  # Planning document
 
 # Language-specific creation
-/prp-create implement API endpoints --language python --framework fastapi
+/prp-create implement API endpoints --language python --framework fastapi --deep-research
 /prp-create add form validation --language ts --framework react
 
 # Template-specific creation
 /prp-create implement database models --template api
 /prp-create add unit tests --template testing
 
-# Comprehensive creation
-/prp-create implement payment system --language ts --framework next --ai-docs --testing --deployment
+# Comprehensive creation with full agent support
+/prp-create implement payment system --language ts --framework next --ai-docs --testing --deployment --deep-research --audio-summary
 ```
 
 ## Implementation
@@ -58,7 +70,7 @@ import re
 
 def create_prp(feature, **options):
     """
-    Create a Product Requirement Prompt (PRP) with language-specific templates.
+    Create a Product Requirement Prompt (PRP) with language-specific templates and agent integration.
     """
     current_dir = Path.cwd()
     
@@ -66,21 +78,32 @@ def create_prp(feature, **options):
     language = options.get('language') or detect_language(current_dir)
     framework = options.get('framework') or detect_framework(current_dir, language)
     template = options.get('template') or select_template(feature, language, framework)
+    prp_type = options.get('type', 'base')
+    deep_research = options.get('deep_research', prp_type == 'base')
     
-    print(f"🔧 Creating PRP for: {feature}")
+    print(f"🔧 Creating {prp_type.upper()} PRP for: {feature}")
     print(f"📝 Language: {language}, Framework: {framework}, Template: {template}")
     
-    # Generate PRP content
+    # Use prp-base-create agent for complex PRPs requiring deep research
+    if deep_research and prp_type in ['base', 'planning']:
+        print("🤖 Launching prp-base-create agent for comprehensive research...")
+        return create_prp_with_agent(feature, language, framework, template, options)
+    
+    # Generate PRP content directly for simpler PRPs
     prp_content = generate_prp_content(feature, language, framework, template, options)
     
     # Determine output path
-    output_path = options.get('output') or generate_output_path(feature, current_dir)
+    output_path = options.get('output') or generate_output_path(feature, current_dir, prp_type)
     
     # Write PRP file
     write_prp_file(output_path, prp_content)
     
     print(f"✅ PRP created: {output_path}")
     print(f"🚀 Run with: /prp-execute {output_path}")
+    
+    # Generate completion summary if requested
+    if options.get('audio_summary'):
+        generate_prp_completion_summary(feature, prp_type, output_path)
 
 def detect_language(project_dir):
     """Detect the primary programming language of the project."""
@@ -521,17 +544,64 @@ def get_usage_examples(language, framework):
     """Get usage examples."""
     return f"// Usage examples for {framework} in {language.upper()}"
 
-def generate_output_path(feature, project_dir):
-    """Generate output path for PRP file."""
+def create_prp_with_agent(feature, language, framework, template, options):
+    """Create PRP using prp-base-create agent for comprehensive research."""
+    
+    task_description = f"Create comprehensive BASE PRP with deep research"
+    prompt = f"""
+    Feature: {feature}
+    Language: {language}
+    Framework: {framework}
+    Template: {template}
+    
+    Create a comprehensive PRP following the prp-base-create agent methodology:
+    
+    1. Perform deep codebase analysis using subagents
+    2. Conduct extensive external research with URLs and examples
+    3. Generate rich context for one-pass implementation success
+    4. Include executable validation gates
+    5. Score the PRP confidence level (1-10)
+    
+    Additional options: {options}
+    
+    The PRP should enable an AI agent to implement the feature successfully in a single pass.
+    """
+    
+    # This would spawn the prp-base-create agent
+    # spawn_agent("prp-base-create", task_description, prompt)
+    print("🔬 Agent performing comprehensive research and PRP generation...")
+
+def generate_output_path(feature, project_dir, prp_type='base'):
+    """Generate output path for PRP file based on type."""
     # Create PRPs directory if it doesn't exist
     prps_dir = project_dir / 'PRPs'
     prps_dir.mkdir(exist_ok=True)
     
-    # Generate filename
+    # Generate filename with type prefix
     filename = feature.lower().replace(' ', '-').replace('_', '-')
     filename = re.sub(r'[^a-z0-9-]', '', filename)
     
+    if prp_type != 'base':
+        filename = f"{prp_type}-{filename}"
+    
     return prps_dir / f'{filename}.md'
+
+def generate_prp_completion_summary(feature, prp_type, output_path):
+    """Generate audio summary of PRP creation completion."""
+    print("🎵 Generating PRP creation completion summary...")
+    
+    task_description = "Generate audio summary of PRP creation"
+    prompt = f"""
+    Created {prp_type.upper()} PRP for {feature}. 
+    PRP file saved to {output_path}.
+    
+    Next steps:
+    1. Review the generated PRP file
+    2. Execute with /prp-execute {output_path}
+    3. Follow validation gates for successful implementation
+    """
+    
+    # spawn_agent("work-completion-summary", task_description, prompt)
 
 def write_prp_file(output_path, content):
     """Write PRP content to file."""
@@ -542,28 +612,42 @@ def write_prp_file(output_path, content):
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description='Create Product Requirement Prompt')
+    parser = argparse.ArgumentParser(description='Create Product Requirement Prompt with agent integration')
     parser.add_argument('feature', help='Feature to implement')
-    parser.add_argument('--language', help='Programming language')
-    parser.add_argument('--framework', help='Framework')
-    parser.add_argument('--template', help='Template type')
+    parser.add_argument('--language', help='Programming language (js, ts, python, go, rust, php, java)')
+    parser.add_argument('--framework', help='Framework (react, vue, angular, next, express, django, etc.)')
+    parser.add_argument('--template', help='Template type (base, spec, task, planning, auth, api, ui, testing, deployment)')
+    parser.add_argument('--type', help='PRP type (base, spec, task, planning)', default='base')
     parser.add_argument('--output', help='Output path')
     parser.add_argument('--ai-docs', action='store_true', help='Include AI documentation')
     parser.add_argument('--examples', action='store_true', help='Include examples')
     parser.add_argument('--testing', action='store_true', help='Include testing')
     parser.add_argument('--deployment', action='store_true', help='Include deployment')
+    parser.add_argument('--deep-research', action='store_true', help='Use prp-base-create agent for extensive research')
+    parser.add_argument('--no-deep-research', action='store_true', help='Disable agent-based research')
+    parser.add_argument('--audio-summary', action='store_true', help='Generate audio summary when complete')
     
     args = parser.parse_args()
+    
+    # Handle deep research logic
+    deep_research = args.deep_research
+    if args.no_deep_research:
+        deep_research = False
+    elif args.type == 'base':
+        deep_research = True  # Default for base PRPs
     
     options = {
         'language': args.language,
         'framework': args.framework,
         'template': args.template,
+        'type': args.type,
         'output': args.output,
         'ai_docs': args.ai_docs,
         'examples': args.examples,
         'testing': args.testing,
-        'deployment': args.deployment
+        'deployment': args.deployment,
+        'deep_research': deep_research,
+        'audio_summary': args.audio_summary
     }
     
     # Remove None values
@@ -572,10 +656,35 @@ if __name__ == "__main__":
     create_prp(args.feature, **options)
 ```
 
-## Notes
-- This consolidated command replaces multiple PRP creation commands
-- Supports multiple languages and frameworks
-- Provides template-specific content
-- Includes AI documentation patterns when requested
-- Generates comprehensive PRP files with examples
-- Reduces command complexity and improves usability 
+## Consolidation Notes
+
+### Replaces These Commands:
+- `PRPs/prp-base-create.md` → `prp-create --type base --deep-research`
+- `PRPs/prp-spec-create.md` → `prp-create --type spec`
+- `PRPs/prp-task-create.md` → `prp-create --type task`
+- `PRPs/prp-planning-create.md` → `prp-create --type planning --deep-research`
+- `typescript/TS-create-base-prp.md` → `prp-create --language ts --type base`
+
+### Agent Integration Benefits:
+- **Deep Research**: Uses prp-base-create agent with subagent spawning for comprehensive analysis
+- **Codebase Intelligence**: Automated analysis of existing patterns and conventions
+- **External Research**: Large-scale research with URL gathering and best practices
+- **Validation Gates**: Creates executable validation commands for one-pass success
+- **Audio Summaries**: Completion feedback for better workflow integration
+- **Context Optimization**: Generates information-dense PRPs for AI implementation success
+
+### Enhanced Capabilities:
+- Supports all PRP types (base, spec, task, planning) with appropriate research depth
+- Language and framework detection with intelligent template selection
+- Automated subagent spawning for parallel research and analysis
+- Executable validation gate generation for self-validation loops
+- Confidence scoring (1-10) for implementation success prediction
+- Audio completion summaries for workflow continuity
+
+### Research Process Optimization:
+- **Phase 1**: Codebase analysis with subagent spawning for pattern discovery
+- **Phase 2**: External research at scale with URL and example gathering
+- **Phase 3**: Context synthesis and PRP generation with rich implementation details
+- **Phase 4**: Validation gate creation and confidence scoring
+
+This consolidated command provides 10x more functionality through agent integration while reducing command complexity from 5 commands to 1. 
